@@ -132,6 +132,7 @@
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="FileWriter.cpp" />
+    <ClCompile Include="Game.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Project_2.cpp" />
   </ItemGroup>
@@ -143,6 +144,8 @@
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="FileWriter.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="LineFile.h" />
     <ClInclude Include="Map.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

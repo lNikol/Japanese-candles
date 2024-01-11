@@ -1,5 +1,4 @@
 ﻿#include "FileSystem.h"
-#include "Map.h"
 #include <iostream>
 #include <fstream>
 #include <iomanip> // zobaczyc co robi
@@ -12,12 +11,19 @@ void max_min(double& value, double& min, double& max) {
 	value < min ? min = value : 0;
 }
 
-void FileSystem::readFile(const char* readFile, const char* outFile, int GRAPHIC_WIDTH = 200, int data_size = 12) {//, int GRAPHIC_HEIGHT=50
-	// lengthOfRead to samo co i GRAPHIC_WIDTH
-	ofstream outputFile;
-	ifstream file;
+void FileSystem::setGameFileLines(LineFile gameFileLines[]) {
+	for (int i = 0; i < graphic_width; i++) {
+		gameFileLines[i] = fileLines[i];
+	}
+}
+
+
+void FileSystem::readFile(LineFile gameFileLines[], double& minGameVal, double& maxGameVal, int graph_w, const char* readFile, const char* outFile) {//, int GRAPHIC_HEIGHT=50
+	// lengthOfRead to samo co i graphic_width
+	graphic_width = graph_w;
 	if (strlen(readFile) > 2) strcpy_s(defaultReadFile, sizeof(defaultReadFile), readFile);
 	if (strlen(outFile) > 2) strcpy_s(defaultOutputFile, sizeof(defaultOutputFile), outFile);
+
 	file.open(defaultReadFile, ios::binary);
 	if (!file.is_open()) {
 		cout << "The file cannot be opened" << endl;
@@ -28,29 +34,26 @@ void FileSystem::readFile(const char* readFile, const char* outFile, int GRAPHIC
 	char linia[MAX_LENGTH];
 	int licznik_linii = 0;
 
-	file.seekg(0, std::ios::end);
+	file.seekg(0, ios::end);
 	int pozycja = file.tellg();
 
 	while (--pozycja >= 0) {
-		file.seekg(pozycja, ios::beg);
+		file.seekg(pozycja, ios::beg); // przesuniecie pozycji
 		char znak;
 		file.get(znak);
 
 		if (znak == '\n') {
 			++licznik_linii;
-			if (licznik_linii == GRAPHIC_WIDTH + 1) {
+			if (licznik_linii == graphic_width + 1) {
 				break;
 			}
 		}
 	}
 	// nie uzywam data_size
 
-	struct LineFile {
-		char data[12];
-		double open, high, low, close;
-	};
 
-	LineFile* fileLines = new LineFile[GRAPHIC_WIDTH];
+
+	fileLines = new LineFile[graphic_width];
 
 	double maxOpen = 0, maxClose = 0, maxLow = 0, maxHigh = 0;
 	double minOpen = -1, minClose = -1, minLow = -1, minHigh = -1;
@@ -64,7 +67,7 @@ void FileSystem::readFile(const char* readFile, const char* outFile, int GRAPHIC
 		while (counter != 5) {
 			double token_value = atof(token);
 			switch (counter) {
-			case 0: strcpy_s(fileLines[c].data, sizeof(fileLines[c].data), token); break;
+			case 0: strcpy_s(fileLines[c].data, fileLines[c].data_size, token); break;
 			case 1: fileLines[c].open = token_value;
 				max_min(token_value, minOpen, maxOpen); break;
 			case 2: fileLines[c].high = token_value;
@@ -81,20 +84,22 @@ void FileSystem::readFile(const char* readFile, const char* outFile, int GRAPHIC
 		c++;
 	}
 
-	double maxValue = max(max(maxOpen, maxClose), max(maxLow, maxHigh));
-	double minValue = min(min(minOpen, minClose), min(minLow, minHigh));
+	maxValue = max(max(maxOpen, maxClose), max(maxLow, maxHigh));
+	minValue = min(min(minOpen, minClose), min(minLow, minHigh));
 
-	Map map(GRAPHIC_WIDTH, 50, minLow, maxValue, 0.404);
-
+	maxGameVal = maxValue;
+	minGameVal = minValue;
+	
+	setGameFileLines(gameFileLines);
 
 	file.close();
 
 }
 
 
-void FileSystem::readFileWithParams(const char* readFileC, const char* outFile, int GRAPHIC_WIDTH = 200, int data_size = 12) {
-	readFile(readFileC, outFile, GRAPHIC_WIDTH, data_size);
-}
+//void FileSystem::readFileWithParams(LineFile gameFileLines[], int minGameVal, int maxGameVal, const char* readUserFile, const char* outUserFile) {
+//	readFile(gameFileLines, minGameVal, maxGameVal, readUserFile, outUserFile);
+//}
 
 //void FileSystem::readFile2(int lengthOfRead = 100) {
 //	ifstream file;
@@ -104,10 +109,10 @@ void FileSystem::readFileWithParams(const char* readFileC, const char* outFile, 
 //	}
 //
 //	const int MAX_LENGTH = 128;
-//	int GRAPHIC_WIDTH = 200;
+//	int graphic_width = 200;
 //	int GRAPHIC_HEIGHT = 50;
 //	const int DATA_SIZE = 12;
-//	const int NUMBER_OF_DATES = floor(GRAPHIC_WIDTH / (DATA_SIZE - 1)); //-1 bo koncowy symbol
+//	const int NUMBER_OF_DATES = floor(graphic_width / (DATA_SIZE - 1)); //-1 bo koncowy symbol
 //	char linia[MAX_LENGTH];
 //	int licznik_linii = 0;
 //
@@ -121,7 +126,7 @@ void FileSystem::readFileWithParams(const char* readFileC, const char* outFile, 
 //
 //		if (znak == '\n') {
 //			++licznik_linii;
-//			if (licznik_linii == GRAPHIC_WIDTH + 1) {
+//			if (licznik_linii == graphic_width + 1) {
 //				break;
 //			}
 //		}
@@ -132,7 +137,7 @@ void FileSystem::readFileWithParams(const char* readFileC, const char* outFile, 
 //		double open, high, low, close;
 //	};
 //
-//	LineFile* fileLines = new LineFile[GRAPHIC_WIDTH];
+//	LineFile* fileLines = new LineFile[graphic_width];
 //
 //	double maxOpen = 0, maxClose = 0, maxLow = 0, maxHigh = 0;
 //	double minOpen = -1, minClose = -1, minLow = -1, minHigh = -1;
@@ -174,7 +179,7 @@ void FileSystem::readFileWithParams(const char* readFileC, const char* outFile, 
 //	//*/
 //	//
 //	//cout << "wspl: " << wspl << endl;
-//	//for (int i = 0; i < GRAPHIC_WIDTH; ++i) {
+//	//for (int i = 0; i < graphic_width; ++i) {
 //	//	cout << fileLines[i].data << endl;
 //
 //	//	double dlg_ciala = abs(fileLines[i].open - fileLines[i].close);
@@ -211,13 +216,13 @@ void FileSystem::readFileWithParams(const char* readFileC, const char* outFile, 
 //	//	cout << "wysokosc cienia dolnego: " << wys_dol << endl;
 //	//	cout << endl;
 //	//}
-//	//cout << "Srednia dlugosc: " << avr_dlg / GRAPHIC_WIDTH << endl;
-//	//cout << "Srednia wysokosc gorna: " << avr_gor / GRAPHIC_WIDTH << endl;
-//	//cout << "Srednia wysokosc dolna: " << avr_dol / GRAPHIC_WIDTH << endl;
+//	//cout << "Srednia dlugosc: " << avr_dlg / graphic_width << endl;
+//	//cout << "Srednia wysokosc gorna: " << avr_gor / graphic_width << endl;
+//	//cout << "Srednia wysokosc dolna: " << avr_dol / graphic_width << endl;
 //	//cout << endl;
 //
 //
-//	Map map(GRAPHIC_WIDTH, GRAPHIC_HEIGHT, minLow, maxValue, wspl);
+//	Map map(graphic_width, GRAPHIC_HEIGHT, minLow, maxValue, wspl);
 //	/*int counter = 0;
 //	for (int i = 0; i < 200; i++) {
 //		if (i == 5 + 11 * counter) {

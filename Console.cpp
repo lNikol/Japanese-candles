@@ -10,7 +10,7 @@ void Console::showAuthor() {
 
 void Console::printMenu() {
 	cout << "1) q - end program\n";
-	cout << "2) g - Graphic from intc_us_data.csv to .txt\n";
+	cout << "2) g - Graphic from intc_us_data.csv to chart.txt\n";
 	cout << "3) v - Graphic from yourReadFile to yourOutFile.txt\n";
 
 }

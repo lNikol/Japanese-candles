@@ -4,10 +4,9 @@
 
 class Controller {
 private:
-	FileSystem filesys;
 	int DATA_SIZE = 12;
 
 public:
-	void defaultStart();
-	void startWithFilesAndParams(char[], char[], int, int, int);
+	void defaultStart(FileSystem);
+	void startWithFilesAndParams(FileSystem, char[], char[], int, int, int); //передать FileSystem по ссылке
 };

@@ -1,21 +1,21 @@
 #include <iostream>
+#include "Game.h"
 #include "Controller.h"
 #include "Console.h"
 using namespace std;
 
 int main()
 {
+	Game game;
 	Console console;
-	Controller controller;
 	console.showAuthor();
 	console.printMenu();
 
 	char turn = '0';
 	while (turn != 'q') {
-
 		cin.get(turn);
 		switch (turn) {
-		case 'g': controller.defaultStart(); break;
+		case 'g': game.fileSys.readFile(game.fileLines, game.minValue, game.maxValue); game.createGameMap(); break;
 		case 'v': 
 		{
 			char inpF[70] = "";
@@ -35,7 +35,8 @@ int main()
 
 			cout << "Please write graph_height, graph_size, data_size (<=12)" << endl;
 			cin >> graph_height, graph_size, data_size;
-			controller.startWithFilesAndParams(inpF, outF, graph_height, graph_size, data_size);
+			game.initializeGame(graph_size, graph_height);
+			game.fileSys.readFile(game.fileLines, game.minValue, game.maxValue, graph_size, inpF, outF);
 		}
 			break; // 
 			
