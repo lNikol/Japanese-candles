@@ -128,16 +128,22 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Console.cpp" />
+    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="FileWriter.cpp" />
+    <ClCompile Include="Map.cpp" />
     <ClCompile Include="Project_2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Calculator.h" />
+    <ClInclude Include="Candle.h" />
     <ClInclude Include="Console.h" />
+    <ClInclude Include="Controller.h" />
     <ClInclude Include="FileReader.h" />
     <ClInclude Include="FileSystem.h" />
     <ClInclude Include="FileWriter.h" />
+    <ClInclude Include="Map.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
