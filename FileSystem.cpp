@@ -18,7 +18,7 @@ void FileSystem::setGameFileLines(LineFile gameFileLines[]) {
 }
 
 
-void FileSystem::readFile(LineFile gameFileLines[], double& minGameVal, double& maxGameVal, int graph_w, const char* readFile, const char* outFile) {//, int GRAPHIC_HEIGHT=50
+void FileSystem::readFile(LineFile gameFileLines[], double& minGameVal, double& maxGameVal, int graph_w, const char* readFile, const char* outFile) {
 	// lengthOfRead to samo co i graphic_width
 	graphic_width = graph_w;
 	if (strlen(readFile) > 2) strcpy_s(defaultReadFile, sizeof(defaultReadFile), readFile);
@@ -49,9 +49,6 @@ void FileSystem::readFile(LineFile gameFileLines[], double& minGameVal, double& 
 			}
 		}
 	}
-	// nie uzywam data_size
-
-
 
 	fileLines = new LineFile[graphic_width];
 
@@ -68,13 +65,13 @@ void FileSystem::readFile(LineFile gameFileLines[], double& minGameVal, double& 
 			double token_value = atof(token);
 			switch (counter) {
 			case 0: strcpy_s(fileLines[c].data, fileLines[c].data_size, token); break;
-			case 1: fileLines[c].open = token_value;
+			case 1: fileLines[c].open = token_value; cout << "o- " << token_value << " ";
 				max_min(token_value, minOpen, maxOpen); break;
-			case 2: fileLines[c].high = token_value;
+			case 2: fileLines[c].high = token_value; cout << "h- " << token_value << " ";
 				max_min(token_value, minHigh, maxHigh); break;
-			case 3: fileLines[c].low = token_value;
+			case 3: fileLines[c].low = token_value; cout << "l- " << token_value << " ";
 				max_min(token_value, minLow, maxLow); break;
-			case 4: fileLines[c].close = token_value;
+			case 4: fileLines[c].close = token_value; cout << "c- " << token_value << " ";
 				max_min(token_value, minClose, maxClose); break;
 			default: break;
 			}
@@ -82,6 +79,7 @@ void FileSystem::readFile(LineFile gameFileLines[], double& minGameVal, double& 
 			counter++;
 		}
 		c++;
+		cout << endl;
 	}
 
 	maxValue = max(max(maxOpen, maxClose), max(maxLow, maxHigh));

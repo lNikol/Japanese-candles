@@ -5,82 +5,101 @@
 using namespace std;
 
 
-void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal, double coef) {
-	left_border = 9; // zaczynamy od 0, musi byc 10 a nie 9
+void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal, double coef, int& totalGameHeight, int& downGamneHeght) {
+	left_border = 8; // zaczynamy od 0, musi byc 10 a nie 9
 	right_border = 1;
 	graph_size = gr_size;
 	total_width = graph_size + left_border + right_border;
 	graph_height = gr_height;
-	down_height = 3; // 3 y to spacja 
-	total_height = graph_height + down_height + 1;
-
+	down_height = 3; // 3 y to minValue 
+	total_height = graph_height + down_height;
+	totalGameHeight = total_height;
+	downGamneHeght = down_height;
 	minLowVal = minVal;
 	maxValue = maxVal;
 	coefficient = coef;
-	textMap = new char*[total_height];
+	textMap = new char* [total_height];
 	allYVal = new double[graph_height];
 
+	number_of_dates = floor(graph_size / (10));
+
+	int c = 0;
+	double tempVal = minLowVal;
+	while (c < graph_height - 1) {
+		allYVal[c] = tempVal;
+		tempVal += coefficient;
+		++c;
+	}
 }
 
 
 void Map::createMap() {
+	int counter = 1;
+
+	cout << "coef" << coefficient << endl;
 	for (int i = 0; i < total_height; i++) {
-		
 		textMap[i] = new char[total_width];
+	}
+
+	for (int i = 0; i < total_height; i++) {
 		for (int j = 0; j < total_width; j++) {
 			// drawing Ox
-			if (i == down_height - 1) {
-				if (j == left_border) textMap[i][j] = '+';
-				else if (j == total_width - 1) textMap[i][j] = '>';
-				else textMap[i][j] = '-';
+			if (i == 1) {
+				for (int l = 0; l < total_width - 1; l++) {
+					textMap[i][l] = '-';
+				}
+				textMap[1][total_width - 1] = '>';
+				//if (j == (9 + counter * 5)) {
+				//	textMap[1][j] = '+';
+				//	counter++;
+				//}
+
 			}
-			else if (i == total_height - 1 && j == left_border-5) {
+			else if (i == total_height - 1 && j == left_border - 5) {
 				for (int k = 0; k < strlen(cena); k++) {
-					textMap[i][j+k] = cena[k];
+					textMap[i][j + k] = cena[k];
 				}
 			}
-		
-			else if (j == left_border) {
+			
+			else if (j == 8) {
 				// drawing Oy
-				if (i == total_height - 1) textMap[i][j] = '^';
-				else {
-					if (i % 2 == 0) {
-						if (i == total_height - 2) textMap[i][j] = '+';
-						else textMap[i][j] = '-';
+				textMap[total_height - 1][j] = '^';
+				textMap[total_height - 2][j] = '+';
+
+				for (int k = 1; k < total_height - 2; k++) {
+					if (k % 2 == 0)
+					{
+						textMap[k][j] = '|';
 					}
-					else textMap[i][j] = '|';
-					//else textMap[i][j] = '|';
+					else textMap[k][j] = '-';
+
 				}
+				textMap[1][8] = '+';
+				textMap[0][8] = '|';
 			}
 			else {
-				if (textMap[i][j] <= 0)	textMap[i][j] = '*';
+				if (textMap[i][j] <= 0)	textMap[i][j] = ' ';
 				// zapytac na konsultacji jak wyswietlic spacje 
 				// (nie chce normalne to sie wyswietlac)
 			}
 		}
 	}
+	//textMap[total_height-1][208] = '2'; 50
+	//textMap[total_height-2][209] = '4';
 
-;
+	
 }
+
+// y = 0 - daty |
 
 
 void Map::drawYValues() {
-	int c = 0;
-	double tempVal = minLowVal;
-	while (c < graph_height - 1) {
-		allYVal[c] = tempVal;
-		cout << "c= " << c << ", Yval = " << allYVal[c] << endl;
-		tempVal += coefficient;
-		++c;
-
-	}
-	int i = down_height+1;
+	int i = 3;
 	for (int k = 0; k < graph_height - 1; k++) {
 		char buf[8]; // liczba typu 22.2222
-		cout << k << ' ' << allYVal[k] << "all k " << endl;
 		sprintf_s(buf, sizeof(buf), "%.4f", allYVal[k]);
 		for (int l = 0; l < strlen(buf); l++) {
-			if(k%2==0)	textMap[k + i][left_border - 8 + l] = buf[l];
+			textMap[k + i][left_border - 8 + l] = buf[l];//if (k % 2 == 0)	
 		}
 	}
 }
@@ -90,8 +109,9 @@ void Map::drawMap() {
 		for (int j = 0; j < total_width; j++) {
 			cout << textMap[i][j];
 		}
-		//cout << endl;
+		if (i > 0)	cout << "\n";
 	}
+
 }
 
 
@@ -103,12 +123,32 @@ void Map::deleteMap() {
 
 }
 
-void Map::drawCandle() {
-	for (int i = total_height - 1; i >= 0; i--) {
-		//cout << endl;
+void Map::writeCandleToMap(int index, Candle candle) {
+	//if ((index - 5) % 12 == 0) {
+	//	for (int k = 0; k < 11; k++) {
+	//		textMap[0][index + k] = candle.data[k];
+	//	}
+	//}
+	// writing candle shadows
+	for (int i = 0; i < graph_height; i++) {
+		if (allYVal[i] == candle.top_gr_minY_value) {
+			for (int k = 0; k < candle.top_shadow_height; k++) {
+				textMap[down_height + i + k][9 + index] = candle.top_shadow[k];
+			}
+		}
+		if (allYVal[i] == candle.bottom_gr_minY_value) {
+			for (int k = 0; k < candle.bottom_shadow_height; k++) {
+				textMap[down_height + i + k][9 + index] = candle.bottom_shadow[k];
+			}
+		}
 	}
-}
-
-void Map::calcPixels() {
+	// writing candle body
+	for (int i = 0; i < graph_height; i++) {
+		if (allYVal[i] == candle.bottom_gr_maxY_value) {
+			for (int k = 0; k < candle.body_height; k++) {
+				textMap[down_height + i + k][9 + index] = candle.body[k];
+			}
+		}
+	}
 
 }
