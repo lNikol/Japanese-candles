@@ -5,7 +5,7 @@
 using namespace std;
 
 
-void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal, double coef, int& totalGameHeight, int& downGamneHeght) {
+void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal, double coef, int& totalGameHeight, int& downGameHeght) {
 	left_border = 8; // zaczynamy od 0, musi byc 10 a nie 9
 	right_border = 1;
 	graph_size = gr_size;
@@ -14,7 +14,7 @@ void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal
 	down_height = 3; // 3 y to minValue 
 	total_height = graph_height + down_height;
 	totalGameHeight = total_height;
-	downGamneHeght = down_height;
+	downGameHeght = down_height;
 	minLowVal = minVal;
 	maxValue = maxVal;
 	coefficient = coef;

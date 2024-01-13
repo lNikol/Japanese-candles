@@ -130,9 +130,7 @@
     <ClCompile Include="Candle.cpp" />
     <ClCompile Include="Console.cpp" />
     <ClCompile Include="Controller.cpp" />
-    <ClCompile Include="FileReader.cpp" />
     <ClCompile Include="FileSystem.cpp" />
-    <ClCompile Include="FileWriter.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Project_2.cpp" />

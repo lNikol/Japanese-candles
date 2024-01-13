@@ -174,6 +174,4 @@ void Candle::calcDownShadow(double low, double high, double coef, double all_gr_
 			}
 		}
 	}
-
-
 }

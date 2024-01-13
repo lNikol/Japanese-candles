@@ -15,7 +15,8 @@ int main()
 	while (turn != 'q') {
 		cin.get(turn);
 		switch (turn) {
-		case 'g': game.initializeGame(200, 50); game.fileSys.readFile(game.fileLines, game.minValue, game.maxValue); game.createGameMap(); break;
+		case 'g': game.initializeGame(200, 50); game.fileSys.readFile(game.fileLines, game.minValue, game.maxValue);
+			game.createGameMap(game.allCandles, game.graphic_width); break;
 		case 'v': 
 		{
 			char inpF[70] = "";

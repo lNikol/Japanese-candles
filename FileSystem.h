@@ -18,6 +18,5 @@ public:
 		const char* readFile = "intc_us_data.csv", const char* outFile = "chart.txt");
 
 	//void readFileWithParams(LineFile[], int, int, const char*, const char*);
-	void readFile2(int);
 	void setGameFileLines(LineFile[]);
 };
