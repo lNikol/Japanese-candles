@@ -2,21 +2,32 @@
 #include "LineFile.h"
 #include <fstream>
 
-class FileSystem {
-private:
+struct FileSystem {
 	LineFile* fileLines;
-	
-public:
+
 	std::ofstream outputFile;
 	std::ifstream file;
 	double maxValue;
 	double minValue;
 	int graphic_width;
-	char defaultReadFile[50] = "intc_us_data.csv";
-	char defaultOutputFile[50] = "chart.txt";
-	void readFile(LineFile gameFileLines[], double& minGameVal, double& maxGameVal, int graph_w = 200, 
-		const char* readFile = "intc_us_data.csv", const char* outFile = "chart.txt");
+	int amountOfRead;
+	int infoLength = 0; // ilosc \n w pliku, czyli dni
+	char defaultReadFile[259] = "intc_us_data.csv";
+	char defaultOutputFile[259] = "chart.txt";
+
+
+	int end_data_x;
+	int end_data_user_x;
+	int start_data_x;
+	int start_data_user_x;
+	int size_data_x;
+
+
+	void readFile(char* readFile);
 
 	//void readFileWithParams(LineFile[], int, int, const char*, const char*);
 	void setGameFileLines(LineFile[]);
+	void deleteFileLines();
+	void findMaxMin();
+	void findDate(char date[], int& dateIndex);
 };

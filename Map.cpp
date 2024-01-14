@@ -1,12 +1,10 @@
 ﻿#include <iostream>
 #include "Map.h"
 #include "LineFile.h"
-
 using namespace std;
 
-
-void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal, double coef, int& totalGameHeight, int& downGameHeght) {
-	left_border = 8; // zaczynamy od 0, musi byc 10 a nie 9
+void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal, double coef, int& totalGameHeight) {
+	left_border = 8; // zaczynamy od 0
 	right_border = 1;
 	graph_size = gr_size;
 	total_width = graph_size + left_border + right_border;
@@ -14,12 +12,11 @@ void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal
 	down_height = 3; // 3 y to minValue 
 	total_height = graph_height + down_height;
 	totalGameHeight = total_height;
-	downGameHeght = down_height;
 	minLowVal = minVal;
 	maxValue = maxVal;
 	coefficient = coef;
 	textMap = new char* [total_height];
-	allYVal = new double[graph_height];
+	allYVal = new double [graph_height];
 
 	number_of_dates = floor(graph_size / (10));
 
@@ -36,7 +33,6 @@ void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal
 void Map::createMap() {
 	int counter = 1;
 
-	cout << "coef" << coefficient << endl;
 	for (int i = 0; i < total_height; i++) {
 		textMap[i] = new char[total_width];
 	}
@@ -84,22 +80,18 @@ void Map::createMap() {
 			}
 		}
 	}
-	//textMap[total_height-1][208] = '2'; 50
-	//textMap[total_height-2][209] = '4';
-
-	
 }
 
 // y = 0 - daty |
 
-
+// zmienic warunek dla wyswietlania allYval
 void Map::drawYValues() {
 	int i = 3;
 	for (int k = 0; k < graph_height - 1; k++) {
 		char buf[8]; // liczba typu 22.2222
 		sprintf_s(buf, sizeof(buf), "%.4f", allYVal[k]);
 		for (int l = 0; l < strlen(buf); l++) {
-			textMap[k + i][left_border - 8 + l] = buf[l];//if (k % 2 == 0)	
+			textMap[k + i][left_border - 8 + l] = buf[l]; //if (k % 2 == 0)	
 		}
 	}
 }

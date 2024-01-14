@@ -129,20 +129,16 @@
   <ItemGroup>
     <ClCompile Include="Candle.cpp" />
     <ClCompile Include="Console.cpp" />
-    <ClCompile Include="Controller.cpp" />
     <ClCompile Include="FileSystem.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="Map.cpp" />
     <ClCompile Include="Project_2.cpp" />
+    <ClCompile Include="Project_2_1.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Calculator.h" />
     <ClInclude Include="Candle.h" />
     <ClInclude Include="Console.h" />
-    <ClInclude Include="Controller.h" />
-    <ClInclude Include="FileReader.h" />
     <ClInclude Include="FileSystem.h" />
-    <ClInclude Include="FileWriter.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="LineFile.h" />
     <ClInclude Include="Map.h" />

@@ -20,7 +20,7 @@ public:
 
 	char cena[5] = "cena";
 	
-	void initializeMap(int, int, double, double, double, int&, int&);
+	void initializeMap(int, int, double, double, double, int&);
 	void createMap();
 	void drawYValues();
 	void drawMap();

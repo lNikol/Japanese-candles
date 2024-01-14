@@ -1,6 +1,5 @@
 #include <iostream>
 #include "Game.h"
-#include "Controller.h"
 #include "Console.h"
 using namespace std;
 
@@ -11,38 +10,135 @@ int main()
 	console.showAuthor();
 	console.printMenu();
 
+	int numforRead = 200; // dotad uzytkownik wpisuje ilosc dni dla wykresu
+	int graph_width = 0;
+	char inputFileName[259] = "intc_us_data.csv";
+
 	char turn = '0';
 	while (turn != 'q') {
 		cin.get(turn);
 		switch (turn) {
-		case 'g': game.initializeGame(200, 50); game.fileSys.readFile(game.fileLines, game.minValue, game.maxValue);
-			game.createGameMap(game.allCandles, game.graphic_width); break;
-		case 'v': 
+		case 'g': game.fileSys.readFile(inputFileName);
+			game.initializeGame(200, 50);
+			game.createGameMap('d', 1);
+			break;
+		case 'v':
 		{
-			char inpF[70] = "";
-			char outF[70] = "";
-			int graph_height = 0, graph_size = 0, data_size = 0;
-			//cout << strlen(inpF) << inpF << endl;
+			char inputFileNameUser[259] = "";
+			const char X[259] = "X";
+			const char X_small[11] = "X";
+			const char fals_big[259] = "false";
+			const char fals[11] = "false";
 
-			while (strlen(inpF) >= 40 || strlen(inpF) == 0) {
-				cout << "Please write your inputFile (length of this file <40): ";
-				cin >> inpF;
+			cout << "Enter the name of the source file (file name.csv in the program folder)"
+			 << " or skip data entry - X\n"; //or enter the full path with the file name and the csv extension, 
+			cin >> inputFileNameUser;
+			if (strcmp(inputFileNameUser, X) != 0)
+			{
+				game.fileSys.readFile(inputFileNameUser);
+				strcpy_s(inputFileName, sizeof(inputFileName), inputFileNameUser);
+			}
+			else { game.fileSys.readFile(inputFileName); }
+
+
+			int graph_size = 200;
+			int graph_height = 50;
+			int graph_size_user = 0;
+			int graph_height_user = 0;
+
+			cout << "Please write graphic height or skip data entry - 0" << endl;
+			cin >> graph_height_user;
+			if (graph_height_user != 0) graph_height = graph_height_user;
+
+			cout << "Please write graphic size or skip data entry - 0" << endl;
+			cin >> graph_size_user;
+			if (graph_size_user != 0) graph_size = graph_size_user;
+
+			char start_data_user[11] = "";
+
+			while (strcmp(start_data_user, "") == 0) {
+				cout << "Enter the start date of the period (from " << game.fileSys.fileLines[game.fileSys.start_data_x].data
+					<< " to " << game.fileSys.fileLines[game.fileSys.end_data_x].data << ") or skip data entry - X\n";
+				cin >> start_data_user;
+				if (strcmp(start_data_user, X_small) != 0) {
+					game.fileSys.findDate(start_data_user, game.fileSys.start_data_user_x);
+					if (strcmp(start_data_user, fals) == 0) {
+						cout << "No calculations were made on this day, enter a different date\n";
+						strcpy_s(start_data_user, sizeof(start_data_user), "");
+					}
+					else {
+						game.fileSys.start_data_x = game.fileSys.start_data_user_x;
+					}
+				}
 			}
 
-			while (strlen(outF) >= 40 || strlen(outF) == 0) {
-				cout << "Please write your outputFile (length of this file <40):";
-				cin >> outF;
+			char end_data_user[11] = "";
+
+			while (strcmp(end_data_user, "") == 0) {
+				cout << "Enter the end date of the period (from " << game.fileSys.fileLines[game.fileSys.start_data_x].data
+					<< " to " << game.fileSys.fileLines[game.fileSys.end_data_x].data << ") or skip data entry - X\n";
+				cin >> end_data_user;
+				if (strcmp(end_data_user, X_small) != 0) {
+					game.fileSys.findDate(end_data_user, game.fileSys.end_data_user_x);
+					if (strcmp(end_data_user, fals) == 0) {
+						cout << "No calculations were made on this day or date is incorrect, enter a different date\n";
+						strcpy_s(end_data_user, sizeof(end_data_user), "");
+					}
+					else {
+						game.fileSys.end_data_x = game.fileSys.end_data_user_x;
+					}
+				}
+
 			}
 
-			cout << "Please write graph_height, graph_size, data_size (<=12)" << endl;
-			cin >> graph_height, graph_size, data_size;
-			game.initializeGame(graph_size, graph_height);
-			game.fileSys.readFile(game.fileLines, game.minValue, game.maxValue, graph_size, inpF, outF);
-		}
-			break; // 
-			
-		default :break;
+			game.fileSys.size_data_x = game.fileSys.end_data_x - game.fileSys.start_data_x;
+
+
+			int candle_scale = 1;
+			int candle_scale_user = 0;
+			cout << "Select the candle scale from 1 to " << game.fileSys.size_data_x
+				<< " (for example, 1 - 1 day, 5 - 1 week, 20 - 1 month, " << game.fileSys.size_data_x / graph_size
+				<< " to write all graph) or skip data entry - 0\n";
+			cin >> candle_scale_user;
+			if (candle_scale_user >= 1) {
+				candle_scale = candle_scale_user;
+			}
+
+
+			cout << game.fileSys.size_data_x << endl;
+
+			if (candle_scale == 1) {
+				if ((graph_size - game.fileSys.size_data_x) >= 0) {
+					candle_scale = 1;
+				}
+				else {
+					game.fileSys.start_data_x = game.fileSys.end_data_x - graph_size + 1;
+					candle_scale = 1;
+				}
+				game.fileSys.size_data_x = game.fileSys.end_data_x - game.fileSys.start_data_x + 1;
+			}
+			else {
+				game.fileSys.size_data_x = game.fileSys.end_data_x - game.fileSys.start_data_x + 1;
+				game.initializeGame(graph_size, graph_height);
+				game.createGameMap(' ', candle_scale);
+				if ((game.fileSys.size_data_x / candle_scale) > graph_size) {
+
+				}
+			}
+
+			/*candle_scale = game.fileSys.size_data_x / graph_size;
+			cout << "The number of data exceeds the size of the graph by x"
+				<< "\nThe calculated coefficient is used to display the graph: one candle = " << candle_scale << " of days\n";*/
+
+				
+			//game.initializeGame(graph_size, graph_height);
+			//game.fileSys.readFile(numforRead, game.minValue, game.maxValue, inputFileName, outFileName);
+		break;
 		}
 
-	}
+		default:break;
+		}
+
+		}
 }
+
