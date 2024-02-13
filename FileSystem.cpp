@@ -122,7 +122,6 @@ void FileSystem::readFile(char* readFile) {
 void FileSystem::findMaxMin() {
 	double maxOpen = 0, maxClose = 0, maxLow = 0, maxHigh = 0;
 	double minOpen = -1, minClose = -1, minLow = -1, minHigh = -1;
-	
 	for (int i = start_data_x; i < end_data_x; i++) {
 		max_min(fileLines[i].open, minOpen, maxOpen);
 		max_min(fileLines[i].close, minClose, maxClose);

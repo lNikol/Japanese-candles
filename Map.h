@@ -25,6 +25,6 @@ public:
 	void drawYValues();
 	void drawMap();
 	void deleteMap();
-	void writeCandleToMap(int index, Candle candle);
+	void writeCandleToMap(int index, Candle candle, Candle arr[], int end_data_scale_x);
 
 };

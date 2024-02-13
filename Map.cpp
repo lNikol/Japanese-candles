@@ -103,7 +103,7 @@ void Map::drawMap() {
 		}
 		if (i > 0)	cout << "\n";
 	}
-
+	cout << "\n";
 }
 
 
@@ -115,13 +115,8 @@ void Map::deleteMap() {
 
 }
 
-void Map::writeCandleToMap(int index, Candle candle) {
-	//if ((index - 5) % 12 == 0) {
-	//	for (int k = 0; k < 11; k++) {
-	//		textMap[0][index + k] = candle.data[k];
-	//	}
-	//}
-	// writing candle shadows
+void Map::writeCandleToMap(int index, Candle candle, Candle arr[], int endT) {
+
 	for (int i = 0; i < graph_height; i++) {
 		if (allYVal[i] == candle.top_gr_minY_value) {
 			for (int k = 0; k < candle.top_shadow_height; k++) {
@@ -142,5 +137,51 @@ void Map::writeCandleToMap(int index, Candle candle) {
 			}
 		}
 	}
+
+	// 1) Сначала ищем иксы для дат
+	// 2) Расчет пустого места для дат 
+	//3) Кол-во дат: int scaleDates = spaceData/11;
+
+
+	int start_date = 9;
+	int end_date = graph_size + 8;
+	int spaceData = end_date - start_date;
+	int scaleDates = (spaceData / 11);
+	int n = 12;
+	int nextData_x = 0;
+
+
+	textMap[1][9] = '|';
+	textMap[1][graph_size + 8] = '|';
+
+	for (int k = 0; k < 11; k++) {
+		textMap[0][5 + k] = arr[0].data[k];
+	}
+
+	for (int k = 0; k < 11; k++) {
+		textMap[0][end_date - 9 + k] = arr[endT-1].data[k];
+	}
+
+
+	for (int i = 0; i <= scaleDates; i++) {
+		nextData_x = start_date + n;
+
+		textMap[1][nextData_x] = '|';
+		
+	/*	int d = nextData_x - 6;
+		for (int k = 0; k < 11; k++) {
+			textMap[0][d + k] = arr[d].data[k];
+		}*/
+		//textMap[0][d + 11] = ' ';
+		//textMap[0][100] = '$';
+		n = n + 11;
+	}
+
+
+
+
+	//graph_size + 8-10 -> index первой цифры даты
+	//
+
 
 }

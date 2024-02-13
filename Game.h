@@ -13,8 +13,6 @@ struct Game
 	int amountOfDates;
 
 	int dataLength = 11;
-	int weekCounter = 0;
-	int monthCounter = 0;
 	int otherCounter = 0;
 	char* start_data = new char[dataLength];
 	char* end_data = new char[dataLength];
@@ -28,9 +26,7 @@ struct Game
 
 	LineFile* fileLines;
 	Candle* allCandles;
-	Candle* weeks_Candles;
-	Candle* month_Candles;
-	Candle* other_Candles;
+	Candle* scale_array;
 
 	Map map;
 	FileSystem fileSys;
@@ -38,8 +34,9 @@ struct Game
 	void initializeGame(int, int);
 	void initializeGameDates(char*, char*);
 	void createGameMap(char type, int scale);
+	void createGameMap2(int, int, int, int, int, int);
 	void doCandle(double open, double close, double low, double high, Candle& candle);
 
-	void groupCandles(int start_ind, int end_ind, Candle arr[], int& arrCounter);
+	Candle groupCandles(int start_ind, int end_ind);
 
 }; 
