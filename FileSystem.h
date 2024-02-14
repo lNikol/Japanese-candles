@@ -30,4 +30,5 @@ struct FileSystem {
 	void deleteFileLines();
 	void findMaxMin();
 	void findDate(char date[], int& dateIndex);
+	void saveInfoToLog(const char info[]);
 };

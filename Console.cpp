@@ -9,8 +9,18 @@ void Console::showAuthor() {
 }
 
 void Console::printMenu() {
-	cout << "1) g - Graph from intc_us_data.csv to chart.txt (in the last 200 days)\n";
-	cout << "2) v - Graph at the request of the user\n"; // тут запрашивать все данные для графика
+
+	cout << "a) Set a new input file with extension\n";
+	cout << "b) Draw graph to the file\n";
+	cout << "c) Set a candle scale\n";
+	cout << "e) Set a new end date\n";
+	cout << "h) Set a new height of graph\n";
+	cout << "j) Show graph in console\n";
+	cout << "n) Set a new start date\n";
+	cout << "s) Set a new size of graph\n";
+
+
+	cout << "g) Graph from intc_us_data.csv to chart.txt (in the last 200 days)\n";
 	// 1) Введите имя исходного файла (имяфайла.csv в папке с программой) или введите полный путь с именем файла и расширением csv, или оставьте поле пустым 
 	// для себя - (файл должен находится в папке с программой)  
 	// Если значение пустое, то открыть свой файл
@@ -32,7 +42,7 @@ void Console::printMenu() {
 	// 8.3) Если имя пустое, то вывести график в консоль
 	// 9) После всего процесса программы вернутся в меню
 
-	cout << "3) q - end program\n";
+	cout << "q) End program\n";
 
 }
 

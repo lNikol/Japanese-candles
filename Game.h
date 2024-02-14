@@ -16,13 +16,10 @@ struct Game
 	int otherCounter = 0;
 	char* start_data = new char[dataLength];
 	char* end_data = new char[dataLength];
-
+	bool isCreated = false;
 
 	double minValue, maxValue, coefficient;
 	Game(int graph_width = 200, int graph_h = 50) : graphic_width(graph_width), graphic_height(graph_h) {};
-
-
-	// переписать graphic_width на переменную пользователя по кол-ву вводных данных
 
 	LineFile* fileLines;
 	Candle* allCandles;
@@ -32,11 +29,10 @@ struct Game
 	FileSystem fileSys;
 
 	void initializeGame(int, int);
-	void initializeGameDates(char*, char*);
-	void createGameMap(char type, int scale);
-	void createGameMap2(int, int, int, int, int, int);
+	void createGameMap(int, int, int, int, int, int);
 	void doCandle(double open, double close, double low, double high, Candle& candle);
-
 	Candle groupCandles(int start_ind, int end_ind);
 
+
+	void defaultMap(char[], int);
 }; 

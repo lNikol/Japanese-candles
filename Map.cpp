@@ -9,7 +9,7 @@ void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal
 	graph_size = gr_size;
 	total_width = graph_size + left_border + right_border;
 	graph_height = gr_height;
-	down_height = 3; // 3 y to minValue 
+	down_height = 3; // 3 y to jest minValue 
 	total_height = graph_height + down_height;
 	totalGameHeight = total_height;
 	minLowVal = minVal;
@@ -18,7 +18,7 @@ void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal
 	textMap = new char* [total_height];
 	allYVal = new double [graph_height];
 
-	number_of_dates = floor(graph_size / (10));
+	number_of_dates = floor(graph_size / 10);
 
 	int c = 0;
 	double tempVal = minLowVal;
@@ -31,8 +31,6 @@ void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal
 
 
 void Map::createMap() {
-	int counter = 1;
-
 	for (int i = 0; i < total_height; i++) {
 		textMap[i] = new char[total_width];
 	}
@@ -45,11 +43,6 @@ void Map::createMap() {
 					textMap[i][l] = '-';
 				}
 				textMap[1][total_width - 1] = '>';
-				//if (j == (9 + counter * 5)) {
-				//	textMap[1][j] = '+';
-				//	counter++;
-				//}
-
 			}
 			else if (i == total_height - 1 && j == left_border - 5) {
 				for (int k = 0; k < strlen(cena); k++) {
@@ -76,7 +69,7 @@ void Map::createMap() {
 			else {
 				if (textMap[i][j] <= 0)	textMap[i][j] = ' ';
 				// zapytac na konsultacji jak wyswietlic spacje 
-				// (nie chce normalne to sie wyswietlac)
+				// (nie chce normalne tego wyswietlac)
 			}
 		}
 	}
@@ -108,7 +101,8 @@ void Map::drawMap() {
 
 
 void Map::deleteMap() {
-	for (int i = 0; i < total_height; i++) {
+	for (int i = total_height - 1; i >= 3; i--) { //total_height
+		//cout << textMap[i]<<endl;
 		delete[] textMap[i];
 	}
 	delete[] textMap;
@@ -140,7 +134,7 @@ void Map::writeCandleToMap(int index, Candle candle, Candle arr[], int endT) {
 
 	// 1) Сначала ищем иксы для дат
 	// 2) Расчет пустого места для дат 
-	//3) Кол-во дат: int scaleDates = spaceData/11;
+	// 3) Кол-во дат: int scaleDates = spaceData/11;
 
 
 	int start_date = 9;

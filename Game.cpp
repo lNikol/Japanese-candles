@@ -7,6 +7,8 @@ void Game::initializeGame(int gr_w, int gr_h) {
 	otherCounter = 0;
 	amountOfDates = fileSys.infoLength;
 
+	isCreated = true;
+
 	fileSys.findMaxMin();
 
 	maxValue = fileSys.maxValue;
@@ -26,47 +28,7 @@ void Game::initializeGame(int gr_w, int gr_h) {
 	
 
 }
-
-void Game::initializeGameDates(char* startData, char* endData) {
-	strcpy_s(start_data, sizeof(start_data), startData);
-	strcpy_s(end_data, sizeof(end_data), endData);
-}
-
-//void Game::createGameMap(char type, int scale) {
-//	coefficient = (maxValue - minValue) / (graphic_height - 2);
-//	map.initializeMap(graphic_width, graphic_height, minValue, maxValue, coefficient, total_height);
-//	map.createMap();
-//	map.drawYValues();
-//
-//
-//
-//
-//	switch (type) {
-//	case 'd': 
-//		for (int i = fileSys.start_data_x; i <= fileSys.end_data_x; i++) {
-//			map.writeCandleToMap(i - fileSys.start_data_x, allCandles[i]);
-//		}
-//		break;
-//	default:
-//		for (int i = fileSys.start_data_x; i <= fileSys.end_data_x - scale; i++) {
-//			if ((i - fileSys.start_data_x) % scale == 0) groupCandles(i, i + scale, scale_array, otherCounter);
-//		}
-//		int N = fileSys.size_data_x - scale * otherCounter;
-//		if (N != 0) {
-//			groupCandles(fileSys.start_data_x + scale * otherCounter, fileSys.end_data_x, scale_array, otherCounter);
-//		}
-//		std::cout << otherCounter << std::endl;
-//		for (int i = 0; i < otherCounter; i++) {
-//			map.writeCandleToMap(i, scale_array[i]);
-//		}
-//		  break;
-//	}	
-//
-//	map.drawMap();
-//}
-
-
-void Game::createGameMap2(int candle_scale, int start_data_x, int end_data_x, int graph_height, int graph_size, int size_data_x) {
+void Game::createGameMap(int candle_scale, int start_data_x, int end_data_x, int graph_height, int graph_size, int size_data_x) {
 	coefficient = (maxValue - minValue) / (graphic_height - 2);
 	map.initializeMap(graph_size, graph_height, minValue, maxValue, coefficient, total_height);
 	map.createMap();
@@ -79,15 +41,9 @@ void Game::createGameMap2(int candle_scale, int start_data_x, int end_data_x, in
 	}
 
 
-
 	int lengthOfArray;
-	if (size_data_x % candle_scale == 0)
-	{
-		lengthOfArray = size_data_x / candle_scale;
-	}
-	else {
-		lengthOfArray = size_data_x / candle_scale + 1;
-	}
+	if (size_data_x % candle_scale == 0) lengthOfArray = size_data_x / candle_scale;
+	else lengthOfArray = size_data_x / candle_scale + 1;
 
 	int size_data_scale_x = lengthOfArray;
 	scale_array = new Candle[lengthOfArray];
@@ -96,9 +52,7 @@ void Game::createGameMap2(int candle_scale, int start_data_x, int end_data_x, in
 	int end_candle_x = 0;
 	for (int i = start_data_x + 1; i < end_data_x; i++)
 	{
-		if (i + candle_scale > end_data_x) {
-			end_candle_x = end_data_x - i;
-		}
+		if (i + candle_scale > end_data_x) end_candle_x = end_data_x - i;
 		else {
 			end_candle_x = candle_scale;
 		}
@@ -116,8 +70,8 @@ void Game::createGameMap2(int candle_scale, int start_data_x, int end_data_x, in
 	for (int k = start_data_scale_x; k <= end_data_scale_x; k++) {
 		map.writeCandleToMap(k - start_data_scale_x, scale_array[k], scale_array, end_data_scale_x);
 	}
-
-
+	
+	delete allCandles, scale_array, fileLines;
 
 }
 
@@ -135,7 +89,6 @@ void Game::doCandle(double open, double close, double low, double high, Candle& 
 	candle.calcTopShadow(low, high, coefficient, map.allYVal);
 	candle.calcDownShadow(low, high, coefficient, map.allYVal);
 }
-
 
 Candle Game::groupCandles(int start_ind, int end_ind) {
 	// start_ind - index of start candle
@@ -165,6 +118,24 @@ Candle Game::groupCandles(int start_ind, int end_ind) {
 	//arr[arrCounter] = candle;
 	//arrCounter++;
 }
+
+
+
+void Game::defaultMap(char inputFileName[], int cndle_scale) {
+	if (isCreated) {
+		map.deleteMap();
+	}
+	fileSys.readFile(inputFileName);
+	fileSys.size_data_x = 200;
+	fileSys.start_data_x = fileSys.end_data_x - 200;
+	fileSys.size_data_x = fileSys.end_data_x - fileSys.start_data_x + 1;
+	fileSys.findMaxMin();
+	initializeGame(200, 50);
+	createGameMap(cndle_scale, fileSys.start_data_x, fileSys.end_data_x, 50, 200, fileSys.size_data_x);
+
+}
+
+
 
 // Записывать действия пользователя в файл .log. После каждого действия закрывать файл, 
 // и при новом действии открывать и дописывать данные к файлу

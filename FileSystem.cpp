@@ -1,6 +1,8 @@
-﻿#include "FileSystem.h"
+﻿#define _CRT_SECURE_NO_WARNINGS
+#include "FileSystem.h"
 #include <iostream>
 #include <fstream>
+
 using namespace std;
 
 
@@ -19,19 +21,19 @@ void FileSystem::setGameFileLines(LineFile gameFileLines[]) {
 
 void FileSystem::readFile(char* readFile) {
 
-	bool withDot = false;
-	for (int i = 0; i < strlen(readFile); i++) {
-		if (readFile[i] == '.') withDot = true;
-	}
+	//bool withDot = false;
+	//for (int i = 0; i < strlen(readFile); i++) {
+	//	if (readFile[i] == '.') withDot = true;
+	//}
 
 	// доделать проверку на имя файла
-	// если отстувтует .csv, то дописать
+	// если отсутствует .csv, то дописать
 	// иначе прочитать файл по имени
 	const char X[259] = "X";
 
 	file.open(readFile, ios::binary);
 	while (!file.is_open()) {
-		cout << "The file cannot be opened (or the file does not exist, or select another file)" << endl;
+		cout << "The file cannot be opened (or the file does not exist, or select another file or write X to select default file)" << endl;
 		cin >> readFile;
 		//bool withDot = false;
 		//for (int i = 0; i < strlen(readFile); i++) {
@@ -49,19 +51,17 @@ void FileSystem::readFile(char* readFile) {
 
 	int licznik_linii = 0;
 	file.seekg(0, ios::end);
-	std::streampos amountOfSymbols = file.tellg();// przesuniecie wskaznika pozycji odczytu
+	streampos amountOfSymbols = file.tellg(); // przesuniecie wskaznika pozycji odczytu
 
 
 	int position = file.tellg();
-	int t = 0;
+	int t = 0; // t liczy ilosc \n od konca pliku
 	char znak = '\n' - 1;
 
 	while (--position >= 0 && znak <= '\n') {
 		file.seekg(position, ios::beg); // przesuniecie pozycji
 		file.get(znak);
-		if (znak == '\n') {
-			++t;
-		}
+		if (znak == '\n') ++t;
 	}
 
 	file.seekg(0, ios::beg);
@@ -144,6 +144,35 @@ void FileSystem::findDate(char date[], int& dateIndex) {
 
 }
 
-//void FileSystem::readFileWithParams(LineFile gameFileLines[], int minGameVal, int maxGameVal, const char* readUserFile, const char* outUserFile) {
-//	readFile(gameFileLines, minGameVal, maxGameVal, readUserFile, outUserFile);
-//}
+
+void FileSystem::saveInfoToLog(const char info[]) {
+	time_t currentTime = time(nullptr);
+
+	struct tm* localTime = localtime(&currentTime);
+
+	ofstream outputFile("log.log", ios::app);
+
+	if (!outputFile.is_open()) {
+		cerr << "File opening error!" << endl;
+	}
+
+	outputFile << "[" << localTime->tm_year + 1900 << "-";
+	if ((localTime->tm_mon + 1) < 10) {
+		outputFile << "0" << localTime->tm_mon + 1;
+	}
+	else outputFile << localTime->tm_mon + 1;
+	outputFile << "-" << localTime->tm_mday << " " << localTime->tm_hour << ":";
+
+	if ((localTime->tm_min) < 10) {
+		outputFile << "0" << localTime->tm_min<<":";
+	}
+	else outputFile << localTime->tm_min<<":";
+
+	if ((localTime->tm_sec) < 10) {
+		outputFile << "0" << localTime->tm_sec<<"]       : ";
+	}
+	else outputFile << localTime->tm_sec<<"]       : ";
+
+	outputFile << info << endl;
+	outputFile.close();
+}
