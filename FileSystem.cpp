@@ -12,6 +12,12 @@ void max_min(double& value, double& min, double& max) {
 	value < min ? min = value : 0;
 }
 
+void FileSystem::initializeFileSystem() {
+	end_data_x = infoLength - 1;
+	start_data_x = 0;
+	size_data_x = end_data_x - start_data_x;
+}
+
 void FileSystem::setGameFileLines(LineFile gameFileLines[]) {
 	for (int i = 0; i < infoLength; i++) {
 		gameFileLines[i] = fileLines[i];
@@ -141,7 +147,6 @@ void FileSystem::findDate(char date[], int& dateIndex) {
 		if (strcmp(date, fileLines[i].data) == 0 && i >= start_data_user_x) { dateIndex = i; break; }
 		else { if (i == infoLength - 1) strcpy_s(date, sizeof(date), "false"); }
 	}
-
 }
 
 

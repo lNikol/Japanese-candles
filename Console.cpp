@@ -18,7 +18,7 @@ void Console::printMenu() {
 	cout << "j) Show graph in console\n";
 	cout << "n) Set a new start date\n";
 	cout << "s) Set a new size of graph\n";
-
+	cout << "r) Reset dates\n";
 
 	cout << "g) Graph from intc_us_data.csv to chart.txt (in the last 200 days)\n";
 	// 1) ¬ведите им€ исходного файла (им€файла.csv в папке с программой) или введите полный путь с именем файла и расширением csv, или оставьте поле пустым 

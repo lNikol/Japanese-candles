@@ -108,8 +108,8 @@ void Map::deleteMap() {
 	delete[] textMap;
 
 }
-
-void Map::writeCandleToMap(int index, Candle candle, Candle arr[], int endT) {
+//(k - start_data_scale_x, scale_array[k], scale_array, end_data_scale_x);
+void Map::writeCandleToMap(int index, Candle candle, Candle arr[], int endT, int amountOfDates) {
 
 	for (int i = 0; i < graph_height; i++) {
 		if (allYVal[i] == candle.top_gr_minY_value) {
@@ -131,51 +131,52 @@ void Map::writeCandleToMap(int index, Candle candle, Candle arr[], int endT) {
 			}
 		}
 	}
+}
 
+void Map::drawCandlesDates(int start_date_index, Candle arr[], int endT, int amountOfDates, int candle_scale) {
 	// 1) Сначала ищем иксы для дат
 	// 2) Расчет пустого места для дат 
 	// 3) Кол-во дат: int scaleDates = spaceData/11;
 
-
 	int start_date = 9;
-	int end_date = graph_size + 8;
-	int spaceData = end_date - start_date;
+	int end_date = amountOfDates + 8;
+	int spaceData = abs(end_date - start_date);
 	int scaleDates = (spaceData / 11);
-	int n = 12;
+	cout << scaleDates <<" "<< candle_scale << endl;
+
+	int n = 11;
 	int nextData_x = 0;
 
 
-	textMap[1][9] = '|';
-	textMap[1][graph_size + 8] = '|';
+	if (amountOfDates > spaceForTwoDates) {
+		textMap[1][9] = '|';
+		textMap[1][end_date - 1] = '|';
 
-	for (int k = 0; k < 11; k++) {
-		textMap[0][5 + k] = arr[0].data[k];
+		for (int k = 0; k < 10; k++) {
+			textMap[0][5 + k] = arr[start_date_index].data[k];
+			textMap[0][abs(end_date - 9) + k] = arr[endT - 1].data[k];
+		}
+		for (int i = 0; i < scaleDates - 2; i++) {
+			nextData_x = start_date + n;
+
+			textMap[1][nextData_x] = '|';
+
+			int d = nextData_x - 4;
+			for (int k = 0; k < 10; k++) {
+				textMap[0][d + k] = arr[start_date_index + d].data[k];
+			}
+			n = n + 11;
+		}
 	}
-
-	for (int k = 0; k < 11; k++) {
-		textMap[0][end_date - 9 + k] = arr[endT-1].data[k];
+	else {
+		textMap[1][9] = '|';
+		for (int k = 0; k < 10; k++) {
+			textMap[0][5 + k] = arr[start_date_index].data[k];
+		}
+		cout << "The width of the graph is small, only one date will be displayed\n";
 	}
-
-
-	for (int i = 0; i <= scaleDates; i++) {
-		nextData_x = start_date + n;
-
-		textMap[1][nextData_x] = '|';
-		
-	/*	int d = nextData_x - 6;
-		for (int k = 0; k < 11; k++) {
-			textMap[0][d + k] = arr[d].data[k];
-		}*/
-		//textMap[0][d + 11] = ' ';
-		//textMap[0][100] = '$';
-		n = n + 11;
-	}
-
-
-
 
 	//graph_size + 8-10 -> index первой цифры даты
 	//
-
 
 }
