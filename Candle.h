@@ -28,4 +28,6 @@ struct Candle{
 	void calcTopShadow(double low, double high, double coef, double all_gr_YValues[]);
 	void calcBody(double open, double close, double coef, double all_gr_YValues[]);
 	void calcDownShadow(double low, double high, double coef, double all_gr_YValues[]);
+
+	void deleteCandle();
 };

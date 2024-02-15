@@ -7,8 +7,6 @@ void Game::initializeGame(int gr_w, int gr_h) {
 	otherCounter = 0;
 	amountOfDates = fileSys.infoLength;
 
-	isCreated = true;
-
 	fileSys.findMaxMin();
 
 	maxValue = fileSys.maxValue;
@@ -28,6 +26,7 @@ void Game::initializeGame(int gr_w, int gr_h) {
 	
 
 }
+
 void Game::createGameMap(int candle_scale, int start_data_x, int end_data_x, int graph_height, int graph_size, int size_data_x) {
 	coefficient = (maxValue - minValue) / (graphic_height - 2);
 	map.initializeMap(graph_size, graph_height, minValue, maxValue, coefficient, total_height);
@@ -76,7 +75,6 @@ void Game::createGameMap(int candle_scale, int start_data_x, int end_data_x, int
 
 	map.drawCandlesDates(start_data_scale_x, scale_array, end_data_scale_x, end_data_scale_x - start_data_scale_x + 1, candle_scale);
 
-	delete allCandles, scale_array, fileLines;
 
 }
 
@@ -115,7 +113,7 @@ Candle Game::groupCandles(int start_ind, int end_ind) {
 	candle.candle_close = allCandles[end_ind].candle_close;
 	candle.candle_low = lowVal;
 	candle.candle_high = maxVal;
-	if (start_ind - end_ind != 0) strcpy_s(candle.data, sizeof(candle.data), allCandles[end_ind].data);
+	if (end_ind - start_ind != 0) strcpy_s(candle.data, sizeof(candle.data), allCandles[end_ind].data);
 	else strcpy_s(candle.data, sizeof(candle.data), allCandles[start_ind].data);
 
 	doCandle(candle.candle_open, candle.candle_close, candle.candle_low, candle.candle_high, candle);
@@ -125,9 +123,6 @@ Candle Game::groupCandles(int start_ind, int end_ind) {
 
 
 void Game::defaultMap(char inputFileName[], int cndle_scale) {
-	if (isCreated) {
-		//map.deleteMap();
-	}
 	fileSys.readFile(inputFileName);
 	fileSys.size_data_x = 200;
 	fileSys.start_data_x = fileSys.end_data_x - 200;
@@ -138,7 +133,18 @@ void Game::defaultMap(char inputFileName[], int cndle_scale) {
 
 }
 
+void Game::deleteGameInfo() {
 
+	for (int i = 0; i < amountOfDates; i++) {
+		allCandles[i].deleteCandle();
+	}
+	for (int i = 0; i < sizeof(scale_array)/sizeof(scale_array[0]); i++) {
+		scale_array[i].deleteCandle();
+	}
+	delete[] allCandles;
+	delete[] scale_array;
+	delete[] fileLines;
+}
 
 // Записывать действия пользователя в файл .log. После каждого действия закрывать файл, 
 // и при новом действии открывать и дописывать данные к файлу

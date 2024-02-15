@@ -12,10 +12,17 @@ void max_min(double& value, double& min, double& max) {
 	value < min ? min = value : 0;
 }
 
-void FileSystem::initializeFileSystem() {
+
+void FileSystem::deleteFileLines() {
+	delete[] fileLines;
+}
+
+void FileSystem::initializeFileSystem(char fileName[]) {
 	end_data_x = infoLength - 1;
 	start_data_x = 0;
 	size_data_x = end_data_x - start_data_x;
+	deleteFileLines();
+	readFile(fileName);
 }
 
 void FileSystem::setGameFileLines(LineFile gameFileLines[]) {
@@ -26,26 +33,12 @@ void FileSystem::setGameFileLines(LineFile gameFileLines[]) {
 
 
 void FileSystem::readFile(char* readFile) {
-
-	//bool withDot = false;
-	//for (int i = 0; i < strlen(readFile); i++) {
-	//	if (readFile[i] == '.') withDot = true;
-	//}
-
-	// доделать проверку на имя файла
-	// если отсутствует .csv, то дописать
-	// иначе прочитать файл по имени
 	const char X[259] = "X";
 
 	file.open(readFile, ios::binary);
 	while (!file.is_open()) {
 		cout << "The file cannot be opened (or the file does not exist, or select another file or write X to select default file)" << endl;
 		cin >> readFile;
-		//bool withDot = false;
-		//for (int i = 0; i < strlen(readFile); i++) {
-		//	if (readFile[i] == '.') { withDot = true; break; }
-		//}
-		//if (!withDot) strcat_s(readFile, sizeof(readFile), ".csv");
 		if (strcmp(readFile, X) == 0) {
 			cout << "The default file was selected\n";
 			readFile = defaultReadFile;

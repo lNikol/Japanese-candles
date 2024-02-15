@@ -31,5 +31,5 @@ struct FileSystem {
 	void findMaxMin();
 	void findDate(char date[], int& dateIndex);
 	void saveInfoToLog(const char info[]);
-	void initializeFileSystem();
+	void initializeFileSystem(char fileName[]);
 };

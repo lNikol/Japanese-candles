@@ -1,6 +1,10 @@
 #include "Candle.h"
 #include <iostream>
 
+void Candle::deleteCandle() {
+	delete[] top_shadow, body, bottom_shadow;
+}
+
 void Candle::initializeCandle(int maxH) {
 	max_height = maxH;
 	top_shadow = new char[max_height];
@@ -15,7 +19,7 @@ void Candle::calcTopShadow(double low, double high, double coef, double all_gr_Y
 		if (candle_open < candle_close) {
 			double top_shadow_difference = candle_high - candle_close;
 			int topheight = ceil(top_shadow_difference / coef);
-			top_shadow_height = topheight;
+			top_shadow_height = topheight > max_height ? max_height : topheight;
 
 			if (all_gr_YValues[j] <= candle_close && candle_close <= all_gr_YValues[j + 1]) {
 				double tempLowNum = candle_close - all_gr_YValues[j];
@@ -40,7 +44,7 @@ void Candle::calcTopShadow(double low, double high, double coef, double all_gr_Y
 		else {
 			double top_shadow_difference = candle_high - candle_open;
 			int topheight = ceil(top_shadow_difference / coef);
-			top_shadow_height = topheight;
+			top_shadow_height = topheight > max_height ? max_height : topheight;
 
 			if (all_gr_YValues[j] <= candle_open && candle_open <= all_gr_YValues[j + 1]) {
 				double tempLowNum = candle_open - all_gr_YValues[j];
@@ -127,7 +131,7 @@ void Candle::calcDownShadow(double low, double high, double coef, double all_gr_
 		if (candle_open < candle_close) {
 			double bttm_shadow_diff = candle_open - candle_low;
 			int btmHeight = ceil(bttm_shadow_diff / coef);
-			bottom_shadow_height = btmHeight;
+			bottom_shadow_height = btmHeight > max_height ? max_height : btmHeight;
 
 			if (all_gr_YValues[j] <= candle_open && candle_open <= all_gr_YValues[j + 1]) {
 				double tempLowNum = candle_open - all_gr_YValues[j];
@@ -152,7 +156,7 @@ void Candle::calcDownShadow(double low, double high, double coef, double all_gr_
 		else {
 			double bttm_shadow_diff = candle_close - candle_low;
 			int btmHeight = ceil(bttm_shadow_diff / coef);
-			bottom_shadow_height = btmHeight;
+			bottom_shadow_height = btmHeight > max_height ? max_height : btmHeight;
 
 			if (all_gr_YValues[j] <= candle_close && candle_close <= all_gr_YValues[j + 1]) {
 				double tempLowNum = candle_close - all_gr_YValues[j];

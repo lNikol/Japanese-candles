@@ -14,9 +14,6 @@ struct Game
 
 	int dataLength = 11;
 	int otherCounter = 0;
-	char* start_data = new char[dataLength];
-	char* end_data = new char[dataLength];
-	bool isCreated = false;
 
 	double minValue, maxValue, coefficient;
 	Game(int graph_width = 200, int graph_h = 50) : graphic_width(graph_width), graphic_height(graph_h) {};
@@ -35,4 +32,5 @@ struct Game
 
 
 	void defaultMap(char[], int);
+	void deleteGameInfo();
 }; 

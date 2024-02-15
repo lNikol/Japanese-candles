@@ -16,7 +16,7 @@ void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal
 	maxValue = maxVal;
 	coefficient = coef;
 	textMap = new char* [total_height];
-	allYVal = new double [graph_height];
+	allYVal = new double[graph_height];
 
 	number_of_dates = floor(graph_size / 10);
 
@@ -49,7 +49,7 @@ void Map::createMap() {
 					textMap[i][j + k] = cena[k];
 				}
 			}
-			
+
 			else if (j == 8) {
 				// drawing Oy
 				textMap[total_height - 1][j] = '^';
@@ -90,25 +90,30 @@ void Map::drawYValues() {
 }
 
 void Map::drawMap() {
-	for (int i = total_height - 1; i >= 0; i--) {
-		for (int j = 0; j < total_width; j++) {
-			cout << textMap[i][j];
+	if (total_width <= 209) {
+		for (int i = total_height - 1; i >= 0; i--) {
+			for (int j = 0; j < total_width; j++) {
+				cout << textMap[i][j];
+			}
+			if (i > 0)	cout << "\n";
 		}
-		if (i > 0)	cout << "\n";
+		cout << "\n";
 	}
-	cout << "\n";
+	else cout << "\n\nThe graph is too wide, the limit on the console is 200 characters\n"
+		<< "You wrote " << graph_size << endl;
+
 }
 
 
 void Map::deleteMap() {
-	for (int i = total_height - 1; i >= 3; i--) { //total_height
-		//cout << textMap[i]<<endl;
+	for (int i = total_height - 1; i >= 0; i--) { //total_height
 		delete[] textMap[i];
 	}
 	delete[] textMap;
+	delete[] allYVal;
 
 }
-//(k - start_data_scale_x, scale_array[k], scale_array, end_data_scale_x);
+
 void Map::writeCandleToMap(int index, Candle candle, Candle arr[], int endT, int amountOfDates) {
 
 	for (int i = 0; i < graph_height; i++) {
@@ -142,7 +147,6 @@ void Map::drawCandlesDates(int start_date_index, Candle arr[], int endT, int amo
 	int end_date = amountOfDates + 8;
 	int spaceData = abs(end_date - start_date);
 	int scaleDates = (spaceData / 11);
-	cout << scaleDates <<" "<< candle_scale << endl;
 
 	int n = 11;
 	int nextData_x = 0;
