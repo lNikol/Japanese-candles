@@ -23,8 +23,6 @@ void Game::initializeGame(int gr_w, int gr_h) {
 		allCandles[i] = candle;
 		allCandles[i].initializeCandle(graphic_height);
 	}
-	
-
 }
 
 void Game::createGameMap(int candle_scale, int start_data_x, int end_data_x, int graph_height, int graph_size, int size_data_x) {
@@ -39,29 +37,29 @@ void Game::createGameMap(int candle_scale, int start_data_x, int end_data_x, int
 			fileLines[i].low, fileLines[i].high, allCandles[i]);
 	}
 
+	length_of_scale_array = 0;
+	if (size_data_x % candle_scale == 0 && size_data_x > 1) length_of_scale_array = size_data_x / candle_scale;
+	else length_of_scale_array = size_data_x / candle_scale + 1;
 
-	int lengthOfArray;
-	if (size_data_x % candle_scale == 0) lengthOfArray = size_data_x / candle_scale;
-	else lengthOfArray = size_data_x / candle_scale + 1;
-
-	int size_data_scale_x = lengthOfArray;
-	scale_array = new Candle[lengthOfArray];
+	int size_data_scale_x = length_of_scale_array;
+	scale_array = new Candle[length_of_scale_array];
 	
 	int j = 0;
 	int end_candle_x = 0; // indeks ostatniej swiecy
-	for (int i = start_data_x; i < end_data_x; i++) // start_data_x + 1
+	for (int i = start_data_x; i <= end_data_x; i++) // start_data_x + 1
 	{
 		if (i + candle_scale > end_data_x) end_candle_x = end_data_x - i;
+		else if (i + candle_scale == end_data_x) {}
 		else {
 			end_candle_x = candle_scale;
 		}
 		scale_array[j] = groupCandles(i, i + end_candle_x);
-		i = i + end_candle_x - 1;
+		i = end_candle_x == 0 ? i : i + end_candle_x - 1;
 		j++;
 	}
 
 	int start_data_scale_x = 0;
-	int end_data_scale_x = j;
+	int end_data_scale_x = j - 1;
 	if (size_data_scale_x > graph_size) {
 		start_data_scale_x = abs(end_data_scale_x - graph_size + 1);
 		std::cout << "The number of candles exceeds the width of the graphic\n"
@@ -70,7 +68,7 @@ void Game::createGameMap(int candle_scale, int start_data_x, int end_data_x, int
 		// jesli trzeba bedzie zapisac dane do pliku, to trzeba sprawdzic czy poprawnie zapisane
 	}
 	for (int k = start_data_scale_x; k <= end_data_scale_x; k++) {
-		map.writeCandleToMap(k - start_data_scale_x, scale_array[k], scale_array, end_data_scale_x, end_data_scale_x - start_data_scale_x + 1);
+		map.writeCandleToMap(k - start_data_scale_x, scale_array[k], scale_array, end_data_scale_x);
 	}
 
 	map.drawCandlesDates(start_data_scale_x, scale_array, end_data_scale_x, end_data_scale_x - start_data_scale_x + 1, candle_scale);
@@ -113,8 +111,8 @@ Candle Game::groupCandles(int start_ind, int end_ind) {
 	candle.candle_close = allCandles[end_ind].candle_close;
 	candle.candle_low = lowVal;
 	candle.candle_high = maxVal;
-	if (end_ind - start_ind != 0) strcpy_s(candle.data, sizeof(candle.data), allCandles[end_ind].data);
-	else strcpy_s(candle.data, sizeof(candle.data), allCandles[start_ind].data);
+
+	strcpy_s(candle.data, sizeof(candle.data), allCandles[end_ind].data);
 
 	doCandle(candle.candle_open, candle.candle_close, candle.candle_low, candle.candle_high, candle);
 	return candle;
@@ -124,13 +122,11 @@ Candle Game::groupCandles(int start_ind, int end_ind) {
 
 void Game::defaultMap(char inputFileName[], int cndle_scale) {
 	fileSys.readFile(inputFileName);
-	fileSys.size_data_x = 200;
 	fileSys.start_data_x = fileSys.end_data_x - 200;
 	fileSys.size_data_x = fileSys.end_data_x - fileSys.start_data_x + 1;
 	fileSys.findMaxMin();
 	initializeGame(200, 50);
 	createGameMap(cndle_scale, fileSys.start_data_x, fileSys.end_data_x, 50, 200, fileSys.size_data_x);
-
 }
 
 void Game::deleteGameInfo() {
@@ -138,13 +134,11 @@ void Game::deleteGameInfo() {
 	for (int i = 0; i < amountOfDates; i++) {
 		allCandles[i].deleteCandle();
 	}
-	for (int i = 0; i < sizeof(scale_array)/sizeof(scale_array[0]); i++) {
+	for (int i = 0; i < length_of_scale_array; ++i) {
+		//std::cout << scale_array[i].data << " " << i << " ";
 		scale_array[i].deleteCandle();
 	}
 	delete[] allCandles;
-	delete[] scale_array;
+	//delete[] scale_array;
 	delete[] fileLines;
 }
-
-// Записывать действия пользователя в файл .log. После каждого действия закрывать файл, 
-// и при новом действии открывать и дописывать данные к файлу

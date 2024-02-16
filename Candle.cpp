@@ -2,7 +2,11 @@
 #include <iostream>
 
 void Candle::deleteCandle() {
-	delete[] top_shadow, body, bottom_shadow;
+	//delete[] top_shadow;
+	//delete[] body;
+	//delete[] bottom_shadow;
+	std::cout << data << " ";
+	std::cout << (bottom_shadow == nullptr) << std::endl;
 }
 
 void Candle::initializeCandle(int maxH) {
@@ -27,13 +31,22 @@ void Candle::calcTopShadow(double low, double high, double coef, double all_gr_Y
 
 				if (tempLowNum < tempMaxNum) {
 					top_gr_minY_value = all_gr_YValues[j];
-					if (top_shadow_height >= 1) top_gr_maxY_value = all_gr_YValues[j + (top_shadow_height - 1)];
+					if (top_shadow_height >= 1) {
+						int temp_index = abs(j + 1 + (top_shadow_height - 1)) > (max_height - 2) ?
+							(max_height - 2) : abs(j + 1 + (top_shadow_height - 1));
+						top_gr_maxY_value = all_gr_YValues[temp_index];
+					}
 					else top_gr_maxY_value = all_gr_YValues[j];
 					for (int k = 0; k < top_shadow_height; k++) top_shadow[k] = '|';
 				}
 				else {
 					top_gr_minY_value = all_gr_YValues[j + 1];
-					if (top_shadow_height >= 1) top_gr_maxY_value = all_gr_YValues[j + 1 + (top_shadow_height - 1)];
+					if (top_shadow_height >= 1)
+					{
+						int temp_index = abs(j + 1 + (top_shadow_height - 1)) > (max_height - 2) ?
+							(max_height - 2) : abs(j + 1 + (top_shadow_height - 1));
+						top_gr_maxY_value = all_gr_YValues[temp_index];
+					}
 					else top_gr_maxY_value = all_gr_YValues[j + 1];
 
 					for (int k = 0; k < top_shadow_height; k++) top_shadow[k] = '|';
@@ -50,15 +63,27 @@ void Candle::calcTopShadow(double low, double high, double coef, double all_gr_Y
 				double tempLowNum = candle_open - all_gr_YValues[j];
 				double tempMaxNum = all_gr_YValues[j + 1] - candle_open;
 
+
 				if (tempLowNum < tempMaxNum) {
 					top_gr_minY_value = all_gr_YValues[j];
-					if (top_shadow_height >= 1) top_gr_maxY_value = all_gr_YValues[j + (top_shadow_height - 1)];
+					if (top_shadow_height >= 1)
+					{
+						int temp_index = abs(j + 1 + (top_shadow_height - 1)) > (max_height - 2) ?
+							(max_height - 2) : abs(j + 1 + (top_shadow_height - 1));
+						top_gr_maxY_value = all_gr_YValues[temp_index];
+					}
+
 					else top_gr_maxY_value = all_gr_YValues[j];
 					for (int k = 0; k < top_shadow_height; k++) top_shadow[k] = '|';
 				}
 				else {
 					top_gr_minY_value = all_gr_YValues[j + 1];
-					if (top_shadow_height >= 1) top_gr_maxY_value = all_gr_YValues[j + 1 + (top_shadow_height - 1)];
+					if (top_shadow_height >= 1)
+					{
+						int temp_index = abs(j + 1 + (top_shadow_height - 1)) > (max_height - 2) ?
+							(max_height - 2) : abs(j + 1 + (top_shadow_height - 1));
+						top_gr_maxY_value = all_gr_YValues[temp_index];
+					}
 					else top_gr_maxY_value = all_gr_YValues[j + 1];
 
 					for (int k = 0; k < top_shadow_height; k++) top_shadow[k] = '|';
@@ -66,7 +91,6 @@ void Candle::calcTopShadow(double low, double high, double coef, double all_gr_Y
 			}
 		}
 	}
-	
 }
 
 void Candle::calcBody(double open, double close, double coef, double all_gr_YValues[]) {
@@ -83,13 +107,13 @@ void Candle::calcBody(double open, double close, double coef, double all_gr_YVal
 
 				if (tempLowNum < tempMaxNum) {
 					body_gr_minY_value = all_gr_YValues[j];
-					if (amountOfO >= 1) body_gr_maxY_value = all_gr_YValues[j + (amountOfO - 1)];
+					if (amountOfO >= 1) body_gr_maxY_value = all_gr_YValues[abs(j + (amountOfO - 1))];
 					else body_gr_maxY_value = all_gr_YValues[j];
 					for (int k = 0; k < amountOfO; k++) body[k] = 'O';
 				}
 				else {
 					body_gr_minY_value = all_gr_YValues[j + 1];
-					if (amountOfO >= 1) body_gr_maxY_value = all_gr_YValues[j + 1 + (amountOfO - 1)];
+					if (amountOfO >= 1) body_gr_maxY_value = all_gr_YValues[abs(j + 1 + (amountOfO - 1))];
 					else body_gr_maxY_value = all_gr_YValues[j + 1];
 
 					for (int k = 0; k < amountOfO; k++) body[k] = 'O';
@@ -107,13 +131,13 @@ void Candle::calcBody(double open, double close, double coef, double all_gr_YVal
 				double tempMaxNum = all_gr_YValues[j + 1] - open;
 				if (tempLowNum < tempMaxNum) {
 					body_gr_maxY_value = all_gr_YValues[j];
-					if (amountOfHash >= 1) body_gr_minY_value = all_gr_YValues[j - (amountOfHash - 1)];
+					if (amountOfHash >= 1) body_gr_minY_value = all_gr_YValues[abs(j - (amountOfHash - 1))];
 					else body_gr_minY_value = all_gr_YValues[j];
 					for (int k = 0; k < amountOfHash; k++) body[k] = '#';
 				}
 				else {
 					body_gr_maxY_value = all_gr_YValues[j + 1];
-					if (amountOfHash >= 1) body_gr_minY_value = all_gr_YValues[j + 1 - (amountOfHash - 1)];
+					if (amountOfHash >= 1) body_gr_minY_value = all_gr_YValues[abs(j + 1 - (amountOfHash - 1))];
 					else body_gr_minY_value = all_gr_YValues[j + 1];
 					for (int k = 0; k < amountOfHash; k++) body[k] = '#';
 				}

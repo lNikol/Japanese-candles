@@ -274,6 +274,7 @@ int main()
 			game.map.drawMap();
 			game.map.deleteMap();
 			game.deleteGameInfo();
+			game.fileSys.initializeFileSystem(inputFileName);
 
 			cout << endl;
 			console.printMenu();

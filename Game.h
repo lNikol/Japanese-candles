@@ -11,7 +11,7 @@ struct Game
 	int total_height;
 	int down_height;
 	int amountOfDates;
-
+	int length_of_scale_array;
 	int dataLength = 11;
 	int otherCounter = 0;
 

@@ -106,25 +106,29 @@ void Map::drawMap() {
 
 
 void Map::deleteMap() {
-	for (int i = total_height - 1; i >= 0; i--) { //total_height
+	for (int i = 0; i < total_height; i++) {
+		//cout << i;
 		delete[] textMap[i];
+		//cout << " after" << endl;
 	}
 	delete[] textMap;
 	delete[] allYVal;
 
 }
 
-void Map::writeCandleToMap(int index, Candle candle, Candle arr[], int endT, int amountOfDates) {
+void Map::writeCandleToMap(int index, Candle candle, Candle arr[], int endT) {
 
 	for (int i = 0; i < graph_height; i++) {
 		if (allYVal[i] == candle.top_gr_minY_value) {
 			for (int k = 0; k < candle.top_shadow_height; k++) {
-				textMap[down_height + i + k][9 + index] = candle.top_shadow[k];
+				if (down_height + i + k < total_height - 1)
+					textMap[down_height + i + k][9 + index] = candle.top_shadow[k];
 			}
 		}
 		if (allYVal[i] == candle.bottom_gr_minY_value) {
 			for (int k = 0; k < candle.bottom_shadow_height; k++) {
-				textMap[down_height + i + k][9 + index] = candle.bottom_shadow[k];
+				if (down_height + i + k < total_height - 1 )
+					textMap[down_height + i + k][9 + index] = candle.bottom_shadow[k];
 			}
 		}
 	}
@@ -132,16 +136,14 @@ void Map::writeCandleToMap(int index, Candle candle, Candle arr[], int endT, int
 	for (int i = 0; i < graph_height; i++) {
 		if (allYVal[i] == candle.bottom_gr_maxY_value) {
 			for (int k = 0; k < candle.body_height; k++) {
-				textMap[down_height + i + k][9 + index] = candle.body[k];
+				if (down_height + i + k < total_height - 1)
+					textMap[down_height + i + k][9 + index] = candle.body[k];
 			}
 		}
 	}
 }
 
 void Map::drawCandlesDates(int start_date_index, Candle arr[], int endT, int amountOfDates, int candle_scale) {
-	// 1) Сначала ищем иксы для дат
-	// 2) Расчет пустого места для дат 
-	// 3) Кол-во дат: int scaleDates = spaceData/11;
 
 	int start_date = 9;
 	int end_date = amountOfDates + 8;
