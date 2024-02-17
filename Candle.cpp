@@ -5,8 +5,8 @@ void Candle::deleteCandle() {
 	//delete[] top_shadow;
 	//delete[] body;
 	//delete[] bottom_shadow;
-	std::cout << data << " ";
-	std::cout << (bottom_shadow == nullptr) << std::endl;
+	//std::cout << data << " ";
+	//std::cout << (bottom_shadow == nullptr) << std::endl;
 }
 
 void Candle::initializeCandle(int maxH) {

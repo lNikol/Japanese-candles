@@ -17,9 +17,9 @@ struct FileSystem {
 
 
 	int end_data_x;
-	int end_data_user_x;
+	int end_data_user_x = -1;
 	int start_data_x;
-	int start_data_user_x;
+	int start_data_user_x = -1;
 	int size_data_x;
 
 

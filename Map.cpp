@@ -111,8 +111,8 @@ void Map::deleteMap() {
 		delete[] textMap[i];
 		//cout << " after" << endl;
 	}
-	delete[] textMap;
-	delete[] allYVal;
+	//delete[] textMap;
+	//delete[] allYVal;
 
 }
 
@@ -156,10 +156,10 @@ void Map::drawCandlesDates(int start_date_index, Candle arr[], int endT, int amo
 
 	if (amountOfDates > spaceForTwoDates) {
 		textMap[1][9] = '|';
-		textMap[1][end_date - 1] = '|';
-
+		textMap[1][end_date] = '|';
+		cout << "start_date_index: " << start_date_index << endl;
 		for (int k = 0; k < 10; k++) {
-			textMap[0][5 + k] = arr[start_date_index].data[k];
+			textMap[0][5 + k] = arr[start_date_index == 0 ? start_date_index : start_date_index - 1].data[k];
 			textMap[0][abs(end_date - 9) + k] = arr[endT - 1].data[k];
 		}
 		for (int i = 0; i < scaleDates - 2; i++) {
@@ -172,6 +172,23 @@ void Map::drawCandlesDates(int start_date_index, Candle arr[], int endT, int amo
 				textMap[0][d + k] = arr[start_date_index + d].data[k];
 			}
 			n = n + 11;
+		}
+
+		int freeSpace = (end_date - 9) - (nextData_x - 4 + 11);
+		int additional_dates = freeSpace / 11;
+		cout << freeSpace << " " << additional_dates << endl;
+		if (additional_dates > 0) {
+			for (int i = 0; i < additional_dates; i++) {
+				nextData_x = start_date + n;
+
+				textMap[1][nextData_x] = '|';
+
+				int d = nextData_x - 4;
+				for (int k = 0; k < 10; k++) {
+					textMap[0][d + k] = arr[start_date_index + d].data[k];
+				}
+				n = n + 11;
+			}
 		}
 	}
 	else {

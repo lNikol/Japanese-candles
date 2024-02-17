@@ -1,7 +1,8 @@
 #include "Game.h"
 #include <iostream>
 
-void Game::initializeGame(int gr_w, int gr_h) {
+	void Game::initializeGame(int gr_w, int gr_h) {
+	std::cout << "in initializeGame\n";
 	graphic_width = gr_w;
 	graphic_height = gr_h;
 	otherCounter = 0;
@@ -23,6 +24,8 @@ void Game::initializeGame(int gr_w, int gr_h) {
 		allCandles[i] = candle;
 		allCandles[i].initializeCandle(graphic_height);
 	}
+	std::cout << "in initializeGame after code\n";
+
 }
 
 void Game::createGameMap(int candle_scale, int start_data_x, int end_data_x, int graph_height, int graph_size, int size_data_x) {
@@ -67,7 +70,7 @@ void Game::createGameMap(int candle_scale, int start_data_x, int end_data_x, int
 			<< " positions will be shown" << std::endl; // czy trzeba tu +1?
 		// jesli trzeba bedzie zapisac dane do pliku, to trzeba sprawdzic czy poprawnie zapisane
 	}
-	for (int k = start_data_scale_x; k <= end_data_scale_x; k++) {
+	for (int k = start_data_scale_x; k <= end_data_scale_x - 1; k++) {
 		map.writeCandleToMap(k - start_data_scale_x, scale_array[k], scale_array, end_data_scale_x);
 	}
 
@@ -122,23 +125,28 @@ Candle Game::groupCandles(int start_ind, int end_ind) {
 
 void Game::defaultMap(char inputFileName[], int cndle_scale) {
 	fileSys.readFile(inputFileName);
-	fileSys.start_data_x = fileSys.end_data_x - 200;
-	fileSys.size_data_x = fileSys.end_data_x - fileSys.start_data_x + 1;
+	fileSys.size_data_x = 200;
+	if (cndle_scale == 1) {
+		fileSys.start_data_x = fileSys.end_data_x - 200;
+		fileSys.size_data_x = fileSys.end_data_x - fileSys.start_data_x + 1;
+	}
 	fileSys.findMaxMin();
 	initializeGame(200, 50);
 	createGameMap(cndle_scale, fileSys.start_data_x, fileSys.end_data_x, 50, 200, fileSys.size_data_x);
 }
 
 void Game::deleteGameInfo() {
-
+	std::cout << "in deleteGameInfo\n";
 	for (int i = 0; i < amountOfDates; i++) {
 		allCandles[i].deleteCandle();
 	}
+	std::cout << "after for_1 in deleteGameInfo\n";
 	for (int i = 0; i < length_of_scale_array; ++i) {
-		//std::cout << scale_array[i].data << " " << i << " ";
 		scale_array[i].deleteCandle();
 	}
-	delete[] allCandles;
+	std::cout << "after for_2 in deleteGameInfo\n";
+
+	//delete[] allCandles;
 	//delete[] scale_array;
-	delete[] fileLines;
+	//delete[] fileLines;
 }

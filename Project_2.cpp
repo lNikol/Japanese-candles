@@ -95,7 +95,8 @@ int main()
 			game.fileSys.saveInfoToLog(information);
 			memset(information, ' ', 200);
 
-			game.fileSys.size_data_x = game.fileSys.end_data_x - game.fileSys.start_data_x;
+			game.fileSys.initializeFileSystem(inputFileName);
+
 			game.initializeGame(graph_size, graph_height);
 			game.createGameMap(candle_scale, game.fileSys.start_data_x, game.fileSys.end_data_x, graph_height, graph_size, game.fileSys.size_data_x);
 
@@ -125,11 +126,11 @@ int main()
 		case 'c': {
 			game.fileSys.saveInfoToLog("User entered c");
 
-			game.fileSys.size_data_x = game.fileSys.end_data_x - game.fileSys.start_data_x;
-			cout << "Select the candle scale from 1 to " << game.fileSys.size_data_x
-				<< " (for example, 1 - 1 day, 5 - 1 week, 20 - 1 month, " << ceil(game.fileSys.size_data_x / graph_size) + 1
+			cout << "Select the candle scale from 1 to " << game.fileSys.end_data_x - game.fileSys.start_data_x
+				<< " (for example, 1 - 1 day, 5 - 1 week, 20 - 1 month, " << ceil((game.fileSys.end_data_x - game.fileSys.start_data_x) / graph_size) + 1
 				<< " to write all graph) or skip data entry - 0\n";
 			cin >> candle_scale_user;
+			cout << candle_scale_user << endl;
 
 			strcpy_s(information, "candle_scale_user (int) = ");
 
@@ -144,16 +145,16 @@ int main()
 			else if (candle_scale_user == 0) {
 				cout << "You wrote 0, candle scale will be " << candle_scale << "\n";
 			}
-			//if (candle_scale == 1) {
-			//	if ((graph_size - game.fileSys.size_data_x) >= 0) {
-			//		//candle_scale = 1;
-			//	}
-			//	else {
-			//		game.fileSys.start_data_x = game.fileSys.end_data_x - graph_size + 1;
-			//		//candle_scale = 1;
-			//	}
-			//	game.fileSys.size_data_x = game.fileSys.end_data_x - game.fileSys.start_data_x + 1;
-			//}
+		/*	if (candle_scale == 1) {
+				if ((graph_size - game.fileSys.size_data_x) >= 0) {
+					candle_scale = 1;
+				}
+				else {
+					game.fileSys.start_data_x = game.fileSys.end_data_x - graph_size + 1;
+					candle_scale = 1;
+				}
+				game.fileSys.size_data_x = game.fileSys.end_data_x - game.fileSys.start_data_x + 1;
+			}*/
 			//else {
 
 			//	// לאסרעאב candle_scale  =  10
@@ -167,7 +168,6 @@ int main()
 			/*candle_scale = game.fileSys.size_data_x / graph_size;
 			cout << "The number of data exceeds the size of the graph by x"
 				<< "\nThe calculated coefficient is used to display the graph: one candle = " << candle_scale << " of days\n";*/
-
 
 				//game.initializeGame(graph_size, graph_height);
 				//game.fileSys.readFile(numforRead, game.minValue, game.maxValue, inputFileName, outFileName);
@@ -267,14 +267,15 @@ int main()
 		
 		case 'j': {
 			game.fileSys.saveInfoToLog("User entered j (drawing a graph in the console)");
+			game.fileSys.initializeFileSystem(inputFileName);
 
-			game.fileSys.size_data_x = game.fileSys.end_data_x - game.fileSys.start_data_x;
 			game.initializeGame(graph_size, graph_height);
 			game.createGameMap(candle_scale, game.fileSys.start_data_x, game.fileSys.end_data_x, graph_height, graph_size, game.fileSys.size_data_x);
+			
 			game.map.drawMap();
+			cout << "\nOne candle is " << candle_scale << " day(s)\n";
 			game.map.deleteMap();
 			game.deleteGameInfo();
-			game.fileSys.initializeFileSystem(inputFileName);
 
 			cout << endl;
 			console.printMenu();
@@ -324,6 +325,9 @@ int main()
 
 		case 'r': {
 			game.fileSys.saveInfoToLog("User entered r (reset dates)");
+			game.fileSys.end_data_user_x = -1;
+			game.fileSys.start_data_user_x = -1;
+
 			game.fileSys.initializeFileSystem(inputFileName);
 			cout << "The dates have been successfully reset to the default values\n";
 			break;
@@ -348,7 +352,9 @@ int main()
 			break;
 		}
 
-
+		case '\n': {
+			break;
+		}
 		default: {
 			char tempInf[100];
 			strcpy_s(tempInf, "User entered other symbol");
