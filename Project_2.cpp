@@ -76,7 +76,6 @@ int main()
 			else {
 				cout << "You wrote X, the default csv was selected\n";
 				strcpy_s(inputFileName, game.fileSys.defaultReadFile);
-				cout << inputFileName << endl;
 				game.fileSys.readFile(inputFileName);
 			}
 			break;
@@ -136,7 +135,6 @@ int main()
 				<< " (for example, 1 - 1 day, 5 - 1 week, 20 - 1 month, " << ceil((game.fileSys.end_data_x - game.fileSys.start_data_x) / graph_size) + 1
 				<< " to write all graph) or skip data entry - 0\n";
 			cin >> candle_scale_user;
-			cout << candle_scale_user << endl;
 
 			strcpy_s(information, "candle_scale_user (int) = ");
 
@@ -152,32 +150,6 @@ int main()
 				candle_scale = 1;
 				cout << "You wrote 0, candle scale will be " << candle_scale << "\n";
 			}
-		/*	if (candle_scale == 1) {
-				if ((graph_size - game.fileSys.size_data_x) >= 0) {
-					candle_scale = 1;
-				}
-				else {
-					game.fileSys.start_data_x = game.fileSys.end_data_x - graph_size + 1;
-					candle_scale = 1;
-				}
-				game.fileSys.size_data_x = game.fileSys.end_data_x - game.fileSys.start_data_x + 1;
-			}*/
-			//else {
-
-			//	// масштаб candle_scale  =  10
-			//	// game.fileSys.start_data_x - начало расчета  =  101
-			//	// game.fileSys.end_data_x - конец расчета по оси иксов = 6100
-			//	// graph_height - высота графика = 100
-			//	// graph_size - ширина графика  = 200
-			//	// game.fileSys.size_data_x - размер в точках (кол-во дат) = game.fileSys.end_data_x - game.fileSys.start_data_x + 1;
-			//}
-
-			/*candle_scale = game.fileSys.size_data_x / graph_size;
-			cout << "The number of data exceeds the size of the graph by x"
-				<< "\nThe calculated coefficient is used to display the graph: one candle = " << candle_scale << " of days\n";*/
-
-				//game.initializeGame(graph_size, graph_height);
-				//game.fileSys.readFile(numforRead, game.minValue, game.maxValue, inputFileName, outFileName);
 			break;
 		}
 		
@@ -347,6 +319,9 @@ int main()
 			cout << "Please write graphic size or skip data entry - 0" << endl;
 			cin >> graph_size_user;
 			if (graph_size_user != 0) graph_size = graph_size_user;
+			else if (graph_size_user < 8) {
+				cout << "The minimum size of a graphic must be 8, you wrote " << graph_size_user << endl;
+			}
 			else {
 				cout << "You wrote 0, graphic size will be " << graph_size << "\n";
 			}

@@ -2,7 +2,6 @@
 #include <iostream>
 
 void Game::initializeGame(short gr_w, short gr_h) {
-	std::cout << "in initializeGame\n";
 	graphic_width = gr_w;
 	graphic_height = gr_h;
 	amountOfDates = fileSys.infoLength;
@@ -23,7 +22,6 @@ void Game::initializeGame(short gr_w, short gr_h) {
 		allCandles[i] = candle;
 		allCandles[i].initializeCandle(graphic_height);
 	}
-	std::cout << "in initializeGame after code\n";
 
 }
 
@@ -42,7 +40,6 @@ void Game::createGameMap(short candle_scale, int start_data_x, int end_data_x, s
 	length_of_scale_array = 0;
 	if (size_data_x % candle_scale == 0 && size_data_x > 1) length_of_scale_array = size_data_x / candle_scale;
 	else length_of_scale_array = size_data_x / candle_scale + 1;
-	std::cout<<"length_of_scale_array: "<<length_of_scale_array << std::endl;
 	int size_data_scale_x = length_of_scale_array;
 	scale_array = new Candle[length_of_scale_array + 1];
 	
@@ -66,8 +63,7 @@ void Game::createGameMap(short candle_scale, int start_data_x, int end_data_x, s
 		start_data_scale_x = abs(end_data_scale_x - graph_size + 1);
 		std::cout << "The number of candles exceeds the width of the graphic\n"
 			<< "the last " << abs(end_data_scale_x - start_data_scale_x + 1)
-			<< " positions will be shown" << std::endl; // czy trzeba tu +1?
-		// jesli trzeba bedzie zapisac dane do pliku, to trzeba sprawdzic czy poprawnie zapisane
+			<< " positions will be shown" << std::endl; 
 	}
 	for (int k = start_data_scale_x; k <= end_data_scale_x; k++) {
 		if ((candle_scale > 1 && k == end_data_scale_x)) continue;
@@ -75,17 +71,7 @@ void Game::createGameMap(short candle_scale, int start_data_x, int end_data_x, s
 	}
 
 	map.drawCandlesDates(start_data_scale_x, scale_array, end_data_scale_x, end_data_scale_x - start_data_scale_x + 1, candle_scale);
-
-
 }
-
-	//масштаб candle_scale = 10
-		// game.fileSys.start_data_x - начало расчета  =  101
-		// game.fileSys.end_data_x - конец расчета по оси иксов = 6100
-		// graph_height - высота графика = 100
-		// graph_size - ширина графика  = 200
-		// game.fileSys.size_data_x - размер в точках (кол-во дат) = game.fileSys.end_data_x - game.fileSys.start_data_x + 1;
-		// };
 
 
 void Game::doCandle(float open, float close, float low, float high, Candle& candle) {
@@ -95,7 +81,6 @@ void Game::doCandle(float open, float close, float low, float high, Candle& cand
 }
 
 Candle Game::groupCandles(int start_ind, int end_ind) {
-	std::cout << start_ind << " " << end_ind << std::endl;
 	// start_ind - index of start candle
 	// end_ind - index of end candle
 	float lowVal = allCandles[start_ind].candle_low;
@@ -137,17 +122,14 @@ void Game::defaultMap(char inputFileName[], short cndle_scale) {
 }
 
 void Game::deleteGameInfo() {
-	std::cout << "in deleteGameInfo\n";
 	for (int i = 0; i < amountOfDates; i++) {
 		allCandles[i].deleteCandle();
 	}
-	std::cout << "after for_1 in deleteGameInfo\n";
 	for (int i = 0; i < length_of_scale_array; ++i) {
 		scale_array[i].deleteCandle();
 	}
-	std::cout << "after for_2 in deleteGameInfo\n";
 
-	//delete[] allCandles;
-	//delete[] scale_array;
-	//delete[] fileLines;
+	delete[] allCandles;
+	delete[] scale_array;
+	delete[] fileLines;
 }

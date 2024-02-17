@@ -66,16 +66,11 @@ void Map::createMap() {
 			}
 			else {
 				if (textMap[i][j] <= 0)	textMap[i][j] = ' ';
-				// zapytac na konsultacji jak wyswietlic spacje 
-				// (nie chce normalne tego wyswietlac)
 			}
 		}
 	}
 }
 
-// y = 0 - daty |
-
-// zmienic warunek dla wyswietlania allYval
 void Map::drawYValues() {
 	int i = 3;
 	for (int k = 0; k < graph_height - 1; k++) {
@@ -88,7 +83,6 @@ void Map::drawYValues() {
 }
 
 void Map::drawMap() {
-	cout << "before for in drawMap\n";
 	if (total_width <= 209) {
 		for (int i = total_height - 1; i >= 0; i--) {
 			for (int j = 0; j < total_width; j++) {
@@ -100,22 +94,16 @@ void Map::drawMap() {
 	}
 	else cout << "\n\nThe graph is too wide, the limit on the console is 200 characters\n"
 		<< "You wrote " << graph_size << endl;
-	cout << "after drawMap\n";
 
 }
 
 
 void Map::deleteMap() {
-	cout << "in start deleteMap\n";
 	for (int i = 0; i < total_height; i++) {
 		delete[] textMap[i];
 	}
-	cout << "deleteMap after for\n";
 	delete[] textMap;
-	cout << "deleteMap after delete[] textMap\n";
 	delete[] allYVal;
-	cout << "deleteMap after delete[] allYVal\n";
-
 }
 
 void Map::writeCandleToMap(int index, Candle candle, Candle arr[], int endT) {
@@ -158,11 +146,15 @@ void Map::drawCandlesDates(int start_date_index, Candle arr[], int endT, int amo
 
 	if (amountOfDates > spaceForTwoDates) {
 		textMap[1][9] = '|';
-		textMap[1][end_date] = '|';
-		cout << "start_date_index: " << start_date_index << endl;
+		if (end_date > total_width) {
+			textMap[1][total_width - 1] = '|';
+		}
+		else {
+			textMap[1][end_date - 1] = '|';
+		}
 		for (int k = 0; k < 10; k++) {
 			textMap[0][5 + k] = arr[start_date_index == 0 ? start_date_index : start_date_index - 1].data[k];
-			textMap[0][abs(end_date - 9) + k] = arr[endT - 1].data[k];
+			textMap[0][abs(end_date - 10) + k] = arr[endT - 1].data[k];
 		}
 		for (int i = 0; i < scaleDates - 2; i++) {
 			nextData_x = start_date + n;
@@ -176,9 +168,8 @@ void Map::drawCandlesDates(int start_date_index, Candle arr[], int endT, int amo
 			n = n + 11;
 		}
 
-		int freeSpace = (end_date - 9) - (nextData_x - 4 + 11); // nie do konca dziala poprawnie
+		int freeSpace = (end_date - 10) - (nextData_x - 4 + 11); // nie do konca dziala poprawnie
 		int additional_dates = freeSpace / 12;
-		cout << freeSpace << " " << additional_dates << endl;
 		if (additional_dates > 0 && graph_size > 28) {
 			for (int i = 0; i < additional_dates; i++) {
 				nextData_x = start_date + n;

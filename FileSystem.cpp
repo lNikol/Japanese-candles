@@ -15,25 +15,18 @@ void max_min(float& value, float& min, float& max) {
 
 
 void FileSystem::deleteFileLines() {
-	cout << "before delete[] fileLines\n";
 	delete[] fileLines;
-	cout << "after delete[] fileLines\n";
 	return;
 
 }
 
 void FileSystem::initializeFileSystem(char fileName[]) {
-	cout << "in initializeFileSystem\n";
 
 	deleteFileLines();
 	readFile(fileName);
 	end_data_x = end_data_user_x == -1 ? infoLength - 1 : end_data_user_x;
 	start_data_x = start_data_user_x == -1 ? 0 : start_data_user_x;
-	cout << "end_data_user_x: " << end_data_user_x << " end_data_x: " << end_data_x << endl;
-	cout << "start_data_user_x: " << start_data_user_x << " start_data_x: " << start_data_x << endl;
 	size_data_x = end_data_x - start_data_x;
-	cout << "size_data_x: " << size_data_x << endl;
-	cout << "after initializeFileSystem\n";
 	return;
 
 }
@@ -67,27 +60,18 @@ void FileSystem::readFile(char* readFile) {
 
 	file.seekg(0, ios::beg);
 	int position = file.tellg();
-	cout << "before ++position, position = "<< position<<"\n";
 	while (++position && file.eof() == false) {
 		file.seekg(position, ios::beg); // przesuniecie pozycji
-	//	cout<<"in ++: ";
 		char zn;
 		file.get(zn);
 
 		if (zn == '\n' && file.eof() == false) {
 			++licznik_linii;
 		}
-		else if(file.eof()==true) {
-			cout << "file.eof: " << file.eof() << " licznik_linii: " << licznik_linii << " ";
-		}
 	}
-	cout << "\nafter ++position, position = " << position << "\n";
 
-	cout<< "l_l: " << licznik_linii << endl;
 	infoLength = licznik_linii - 1; 
-	cout<<"infoLength: " << infoLength << endl;
 	fileLines = new LineFile[infoLength];
-	cout << "after fileLines = new " << endl;
 	file.close();
 
 	file.open(readFile, ios::binary);
@@ -96,13 +80,10 @@ void FileSystem::readFile(char* readFile) {
 		return;
 	}
 	file.seekg(0, ios::beg);
-	cout << "before c=0 \n";
 	int c = 0;
 	const short MAX_LENGTH = 128;
 	char linia[MAX_LENGTH];
-	cout << "before file.getline(date,open..) \n";
 	file.getline(linia, MAX_LENGTH); // nie czytam linii z "Date, Open, Low..."
-	cout << "after file.getline(date,open..) \n";
 
 	while (file.getline(linia, MAX_LENGTH) && linia[0] != '\n' && linia[0] != '\0') {
 		char* nextToken;
@@ -124,10 +105,7 @@ void FileSystem::readFile(char* readFile) {
 			counter++;
 		}
 		c++;
-		//cout << int(linia[0]) << " c: " << c << " ";
-
 	}
-	cout << "last data: "<<fileLines[infoLength-1].data << endl;
 	end_data_x = infoLength - 1;
 	start_data_x = 0;
 	size_data_x = end_data_x - start_data_x;
@@ -168,52 +146,34 @@ void FileSystem::saveInfoToLog(const char info[]) {
 	time_t currentTime = time(nullptr);
 
 	struct tm* localTime = localtime(&currentTime);
-	cout << "in saveInfoToLog before open\n";
 	ofstream outputFile("log.log", ios::app);
-	cout << "in saveInfoToLog after open\n";
 
 	if (!outputFile.is_open()) {
 		cerr << "File opening error!" << endl;
 		return;
 	}
-	cout << "before tm_year ";
 	outputFile << "[" << localTime->tm_year + 1900 << "-";
-	cout << "after tm_year ";
-	cout << "before tm_mon ";
 
 	if ((localTime->tm_mon + 1) < 10) {
 		outputFile << "0" << localTime->tm_mon + 1;
 	}
 	else outputFile << localTime->tm_mon + 1;
-	cout << "after tm_mon ";
-	cout << "before tm_mday i tm_hour ";
 
 	outputFile << "-" << localTime->tm_mday << " " << localTime->tm_hour << ":";
-	cout << "after tm_mday i tm_hour ";
-	cout << "before tm_min ";
 
 	if ((localTime->tm_min) < 10) {
 		outputFile << "0" << localTime->tm_min<<":";
 	}
 	else outputFile << localTime->tm_min<<":";
-	cout << "after tm_min ";
-	cout << "before tm_sec ";
 
 	if ((localTime->tm_sec) < 10) {
 		outputFile << "0" << localTime->tm_sec<<"]       : ";
 	}
 	else outputFile << localTime->tm_sec<<"]       : ";
-	cout << "after tm_sec \n";
-	cout << "before << info ";
 
 	outputFile << info << endl;
-	cout << "after << info ";
-	cout << "before close ";
 
 	outputFile.close();
-	cout << "after close\n";
-
-	cout << "in saveInfoToLog after all\n";
 	return;
 
 }
