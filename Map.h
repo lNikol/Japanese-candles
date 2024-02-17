@@ -3,25 +3,24 @@
 
 struct Map {
 public:
-	int graph_size;
-	int left_border; 
-	int right_border;
-	int total_width;
-	int graph_height;
+	short graph_size;
+	short left_border;
+	short total_width;
+	short graph_height;
 	int number_of_dates;
 	int spaceForTwoDates = 17; 
 
-	int down_height; 
-	int total_height;
-	double minLowVal, maxValue;
-	double coefficient;
+	short down_height;
+	short total_height;
+	float minLowVal, maxValue;
+	float coefficient;
 	char **textMap;
 
-	double* allYVal;
+	float* allYVal;
 
 	char cena[5] = "cena";
 	
-	void initializeMap(int, int, double, double, double, int&);
+	void initializeMap(short, short, float, float, float);
 	void createMap();
 	void drawYValues();
 	void drawMap();

@@ -2,32 +2,32 @@
 struct Candle{
 	char data[11];
 
-	int max_height;
+	short max_height;
 
 	// gr - graphic
-	double top_gr_minY_value;
-	double top_gr_maxY_value;
-	int top_shadow_height;
+	float top_gr_minY_value;
+	float top_gr_maxY_value;
+	short top_shadow_height;
 	char* top_shadow;
 
-	double body_gr_minY_value;
-	double body_gr_maxY_value;
-	int body_height;
+	float body_gr_minY_value;
+	float body_gr_maxY_value;
+	short body_height;
 	char* body;
 	
-	double bottom_gr_minY_value;
-	double bottom_gr_maxY_value;
-	int bottom_shadow_height;
+	float bottom_gr_minY_value;
+	float bottom_gr_maxY_value;
+	short bottom_shadow_height;
 	char* bottom_shadow;
 
-	double candle_open, candle_close, candle_low, candle_high;
+	float candle_open, candle_close, candle_low, candle_high;
 
 
-	void initializeCandle(int);
+	void initializeCandle(short);
 
-	void calcTopShadow(double low, double high, double coef, double all_gr_YValues[]);
-	void calcBody(double open, double close, double coef, double all_gr_YValues[]);
-	void calcDownShadow(double low, double high, double coef, double all_gr_YValues[]);
+	void calcTopShadow(float low, float high, float coef, float all_gr_YValues[]);
+	void calcBody(float open, float close, float coef, float all_gr_YValues[]);
+	void calcDownShadow(float low, float high, float coef, float all_gr_YValues[]);
 
 	void deleteCandle();
 };

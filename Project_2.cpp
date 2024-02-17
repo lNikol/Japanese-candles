@@ -63,16 +63,21 @@ int main()
 			memset(information, ' ', 200);
 
 			game.fileSys.deleteFileLines();
-
+			game.fileSys.start_data_user_x = -1;
+			game.fileSys.end_data_user_x = -1;
 			if (strcmp(inputFileNameUser, X) != 0)
 			{
+				candle_scale = 1;
+				cout << "One candle will be = 1 day\n";
 				game.fileSys.readFile(inputFileNameUser);
 				strcpy_s(inputFileName, sizeof(inputFileName), inputFileNameUser);
 				cout << "File was found" << endl;
 			}
 			else {
 				cout << "You wrote X, the default csv was selected\n";
-				game.fileSys.readFile(game.fileSys.defaultReadFile);
+				strcpy_s(inputFileName, game.fileSys.defaultReadFile);
+				cout << inputFileName << endl;
+				game.fileSys.readFile(inputFileName);
 			}
 			break;
 		}
@@ -94,7 +99,8 @@ int main()
 
 			game.fileSys.saveInfoToLog(information);
 			memset(information, ' ', 200);
-
+			
+			//candle_scale = 1;
 			game.fileSys.initializeFileSystem(inputFileName);
 
 			game.initializeGame(graph_size, graph_height);
@@ -110,6 +116,7 @@ int main()
 					}
 					if (i > 0)	outFile << "\n";
 				}
+				outFile << "\n\nOne candle is " << candle_scale << " day(s)\n";
 				cout << "The graph was written to a file" << endl;
 
 			}
@@ -143,6 +150,7 @@ int main()
 
 			if (candle_scale_user >= 1) candle_scale = candle_scale_user;
 			else if (candle_scale_user == 0) {
+				candle_scale = 1;
 				cout << "You wrote 0, candle scale will be " << candle_scale << "\n";
 			}
 		/*	if (candle_scale == 1) {
@@ -227,6 +235,7 @@ int main()
 					}
 					if (i > 0)	outFile << "\n";
 				}
+				outFile << "\n\nOne candle is " << candle_scale << " day(s)\n";
 				cout << "The graph was written to a file" << endl;
 				game.fileSys.saveInfoToLog("The graph was written to a file");
 

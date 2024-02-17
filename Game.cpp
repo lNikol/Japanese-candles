@@ -1,11 +1,10 @@
 #include "Game.h"
 #include <iostream>
 
-	void Game::initializeGame(int gr_w, int gr_h) {
+void Game::initializeGame(short gr_w, short gr_h) {
 	std::cout << "in initializeGame\n";
 	graphic_width = gr_w;
 	graphic_height = gr_h;
-	otherCounter = 0;
 	amountOfDates = fileSys.infoLength;
 
 	fileSys.findMaxMin();
@@ -28,9 +27,9 @@
 
 }
 
-void Game::createGameMap(int candle_scale, int start_data_x, int end_data_x, int graph_height, int graph_size, int size_data_x) {
+void Game::createGameMap(short candle_scale, int start_data_x, int end_data_x, short graph_height, short graph_size, int size_data_x) {
 	coefficient = (maxValue - minValue) / (graphic_height - 2);
-	map.initializeMap(graph_size, graph_height, minValue, maxValue, coefficient, total_height);
+	map.initializeMap(graph_size, graph_height, minValue, maxValue, coefficient);
 	map.createMap();
 	map.drawYValues();
 	
@@ -45,7 +44,7 @@ void Game::createGameMap(int candle_scale, int start_data_x, int end_data_x, int
 	else length_of_scale_array = size_data_x / candle_scale + 1;
 
 	int size_data_scale_x = length_of_scale_array;
-	scale_array = new Candle[length_of_scale_array];
+	scale_array = new Candle[length_of_scale_array + 1];
 	
 	int j = 0;
 	int end_candle_x = 0; // indeks ostatniej swiecy
@@ -70,7 +69,7 @@ void Game::createGameMap(int candle_scale, int start_data_x, int end_data_x, int
 			<< " positions will be shown" << std::endl; // czy trzeba tu +1?
 		// jesli trzeba bedzie zapisac dane do pliku, to trzeba sprawdzic czy poprawnie zapisane
 	}
-	for (int k = start_data_scale_x; k <= end_data_scale_x - 1; k++) {
+	for (int k = start_data_scale_x; k <= end_data_scale_x; k++) {
 		map.writeCandleToMap(k - start_data_scale_x, scale_array[k], scale_array, end_data_scale_x);
 	}
 
@@ -88,17 +87,18 @@ void Game::createGameMap(int candle_scale, int start_data_x, int end_data_x, int
 		// };
 
 
-void Game::doCandle(double open, double close, double low, double high, Candle& candle) {
+void Game::doCandle(float open, float close, float low, float high, Candle& candle) {
 	candle.calcBody(open, close, coefficient, map.allYVal);
 	candle.calcTopShadow(low, high, coefficient, map.allYVal);
 	candle.calcDownShadow(low, high, coefficient, map.allYVal);
 }
 
 Candle Game::groupCandles(int start_ind, int end_ind) {
+	std::cout << start_ind << " " << end_ind << std::endl;
 	// start_ind - index of start candle
 	// end_ind - index of end candle
-	double lowVal = allCandles[start_ind].candle_low;
-	double maxVal = allCandles[start_ind].candle_high;
+	float lowVal = allCandles[start_ind].candle_low;
+	float maxVal = allCandles[start_ind].candle_high;
 	for (int i = start_ind; i <= end_ind; i++) {
 		if (allCandles[i].candle_low < lowVal) {
 			lowVal = allCandles[i].candle_low;
@@ -123,7 +123,7 @@ Candle Game::groupCandles(int start_ind, int end_ind) {
 
 
 
-void Game::defaultMap(char inputFileName[], int cndle_scale) {
+void Game::defaultMap(char inputFileName[], short cndle_scale) {
 	fileSys.readFile(inputFileName);
 	fileSys.size_data_x = 200;
 	if (cndle_scale == 1) {
@@ -142,7 +142,7 @@ void Game::deleteGameInfo() {
 	}
 	std::cout << "after for_1 in deleteGameInfo\n";
 	for (int i = 0; i < length_of_scale_array; ++i) {
-		scale_array[i].deleteCandle();
+	//		scale_array[i].deleteCandle();
 	}
 	std::cout << "after for_2 in deleteGameInfo\n";
 

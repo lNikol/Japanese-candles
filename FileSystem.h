@@ -5,12 +5,9 @@
 struct FileSystem {
 	LineFile* fileLines;
 
-	std::ofstream outputFile;
 	std::ifstream file;
-	double maxValue;
-	double minValue;
-	int graphic_width;
-	int amountOfRead;
+	float maxValue;
+	float minValue;
 	int infoLength = 0; // ilosc \n w pliku, czyli dni
 	char defaultReadFile[259] = "intc_us_data.csv";
 	char defaultOutputFile[259] = "chart.txt";
@@ -25,7 +22,6 @@ struct FileSystem {
 
 	void readFile(char* readFile);
 
-	//void readFileWithParams(LineFile[], int, int, const char*, const char*);
 	void setGameFileLines(LineFile[]);
 	void deleteFileLines();
 	void findMaxMin();

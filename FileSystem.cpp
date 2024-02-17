@@ -6,12 +6,11 @@
 using namespace std;
 
 
-void max_min(double& value, double& min, double& max) {
+void max_min(float& value, float& min, float& max) {
 	if (min == -1) min = value;
 	value > max ? max = value : 0;
 	value < min ? min = value : 0;
 	return;
-
 }
 
 
@@ -64,19 +63,7 @@ void FileSystem::readFile(char* readFile) {
 
 	}
 
-	int licznik_linii = 0;
-	//file.seekg(0, ios::end);
-	//streampos amountOfSymbols = file.tellg(); // przesuniecie wskaznika pozycji odczytu
-
-
-
-	//while (--position >= 0 && znak <= '\n') {
-	//	file.seekg(position, ios::beg); // przesuniecie pozycji
-	//	std::cout <<" before get znak: " << file.eof() << en dl;
-	//	file.get(znak);
-	//	std::cout << " after get znak: " << file.eof() << endl;
-	//	if (znak == '\n') ++t;
-	//}
+	short licznik_linii = 0;
 
 	file.seekg(0, ios::beg);
 	int position = file.tellg();
@@ -111,7 +98,7 @@ void FileSystem::readFile(char* readFile) {
 	file.seekg(0, ios::beg);
 	cout << "before c=0 \n";
 	int c = 0;
-	const int MAX_LENGTH = 128;
+	const short MAX_LENGTH = 128;
 	char linia[MAX_LENGTH];
 	cout << "before file.getline(date,open..) \n";
 	file.getline(linia, MAX_LENGTH); // nie czytam linii z "Date, Open, Low..."
@@ -151,8 +138,8 @@ void FileSystem::readFile(char* readFile) {
 }
 
 void FileSystem::findMaxMin() {
-	double maxOpen = 0, maxClose = 0, maxLow = 0, maxHigh = 0;
-	double minOpen = -1, minClose = -1, minLow = -1, minHigh = -1;
+	float maxOpen = 0, maxClose = 0, maxLow = 0, maxHigh = 0;
+	float minOpen = -1, minClose = -1, minLow = -1, minHigh = -1;
 	for (int i = start_data_x; i <= end_data_x; i++) {
 		max_min(fileLines[i].open, minOpen, maxOpen);
 		max_min(fileLines[i].close, minClose, maxClose);

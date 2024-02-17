@@ -3,25 +3,23 @@
 #include "LineFile.h"
 using namespace std;
 
-void Map::initializeMap(int gr_size, int gr_height, double minVal, double maxVal, double coef, int& totalGameHeight) {
+void Map::initializeMap(short gr_size, short gr_height, float minVal, float maxVal, float coef) {
 	left_border = 8; // zaczynamy od 0
-	right_border = 1;
 	graph_size = gr_size;
-	total_width = graph_size + left_border + right_border;
+	total_width = graph_size + left_border + 1;
 	graph_height = gr_height;
 	down_height = 3; // 3 y to jest minValue 
 	total_height = graph_height + down_height;
-	totalGameHeight = total_height;
 	minLowVal = minVal;
 	maxValue = maxVal;
 	coefficient = coef;
 	textMap = new char* [total_height];
-	allYVal = new double[graph_height];
+	allYVal = new float[graph_height];
 
 	number_of_dates = floor(graph_size / 10);
 
 	int c = 0;
-	double tempVal = minLowVal;
+	float tempVal = minLowVal;
 	while (c < graph_height - 1) {
 		allYVal[c] = tempVal;
 		tempVal += coefficient;
@@ -106,13 +104,15 @@ void Map::drawMap() {
 
 
 void Map::deleteMap() {
+	cout << "in start deleteMap\n";
 	for (int i = 0; i < total_height; i++) {
-		//cout << i;
 		delete[] textMap[i];
-		//cout << " after" << endl;
 	}
-	//delete[] textMap;
-	//delete[] allYVal;
+	cout << "deleteMap after for\n";
+	delete[] textMap;
+	cout << "deleteMap after delete[] textMap\n";
+	delete[] allYVal;
+	cout << "deleteMap after delete[] allYVal\n";
 
 }
 
