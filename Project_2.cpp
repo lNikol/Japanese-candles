@@ -100,7 +100,6 @@ int main()
 			game.fileSys.saveInfoToLog(information);
 			memset(information, ' ', 200);
 			
-			//candle_scale = 1;
 			game.fileSys.initializeFileSystem(inputFileName);
 
 			game.initializeGame(graph_size, graph_height);
@@ -235,7 +234,7 @@ int main()
 					}
 					if (i > 0)	outFile << "\n";
 				}
-				outFile << "\n\nOne candle is " << candle_scale << " day(s)\n";
+				outFile << "\n\nOne candle is " << cs << " day\n";
 				cout << "The graph was written to a file" << endl;
 				game.fileSys.saveInfoToLog("The graph was written to a file");
 

@@ -88,6 +88,7 @@ void Map::drawYValues() {
 }
 
 void Map::drawMap() {
+	cout << "before for in drawMap\n";
 	if (total_width <= 209) {
 		for (int i = total_height - 1; i >= 0; i--) {
 			for (int j = 0; j < total_width; j++) {
@@ -99,6 +100,7 @@ void Map::drawMap() {
 	}
 	else cout << "\n\nThe graph is too wide, the limit on the console is 200 characters\n"
 		<< "You wrote " << graph_size << endl;
+	cout << "after drawMap\n";
 
 }
 
@@ -174,10 +176,10 @@ void Map::drawCandlesDates(int start_date_index, Candle arr[], int endT, int amo
 			n = n + 11;
 		}
 
-		int freeSpace = (end_date - 9) - (nextData_x - 4 + 11);
-		int additional_dates = freeSpace / 11;
+		int freeSpace = (end_date - 9) - (nextData_x - 4 + 11); // nie do konca dziala poprawnie
+		int additional_dates = freeSpace / 12;
 		cout << freeSpace << " " << additional_dates << endl;
-		if (additional_dates > 0) {
+		if (additional_dates > 0 && graph_size > 28) {
 			for (int i = 0; i < additional_dates; i++) {
 				nextData_x = start_date + n;
 
@@ -198,8 +200,4 @@ void Map::drawCandlesDates(int start_date_index, Candle arr[], int endT, int amo
 		}
 		cout << "The width of the graph is small, only one date will be displayed\n";
 	}
-
-	//graph_size + 8-10 -> index первой цифры даты
-	//
-
 }

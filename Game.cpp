@@ -42,7 +42,7 @@ void Game::createGameMap(short candle_scale, int start_data_x, int end_data_x, s
 	length_of_scale_array = 0;
 	if (size_data_x % candle_scale == 0 && size_data_x > 1) length_of_scale_array = size_data_x / candle_scale;
 	else length_of_scale_array = size_data_x / candle_scale + 1;
-
+	std::cout<<"length_of_scale_array: "<<length_of_scale_array << std::endl;
 	int size_data_scale_x = length_of_scale_array;
 	scale_array = new Candle[length_of_scale_array + 1];
 	
@@ -51,7 +51,7 @@ void Game::createGameMap(short candle_scale, int start_data_x, int end_data_x, s
 	for (int i = start_data_x; i <= end_data_x; i++) // start_data_x + 1
 	{
 		if (i + candle_scale > end_data_x) end_candle_x = end_data_x - i;
-		else if (i + candle_scale == end_data_x) {}
+		else if (i + candle_scale == end_data_x && candle_scale == 1) {}
 		else {
 			end_candle_x = candle_scale;
 		}
@@ -70,6 +70,7 @@ void Game::createGameMap(short candle_scale, int start_data_x, int end_data_x, s
 		// jesli trzeba bedzie zapisac dane do pliku, to trzeba sprawdzic czy poprawnie zapisane
 	}
 	for (int k = start_data_scale_x; k <= end_data_scale_x; k++) {
+		if ((candle_scale > 1 && k == end_data_scale_x)) continue;
 		map.writeCandleToMap(k - start_data_scale_x, scale_array[k], scale_array, end_data_scale_x);
 	}
 
@@ -142,7 +143,7 @@ void Game::deleteGameInfo() {
 	}
 	std::cout << "after for_1 in deleteGameInfo\n";
 	for (int i = 0; i < length_of_scale_array; ++i) {
-	//		scale_array[i].deleteCandle();
+		scale_array[i].deleteCandle();
 	}
 	std::cout << "after for_2 in deleteGameInfo\n";
 

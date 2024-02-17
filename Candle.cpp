@@ -72,20 +72,20 @@ void Candle::calcTopShadow(float low, float high, float coef, float all_gr_YValu
 					top_gr_minY_value = all_gr_YValues[j];
 					if (top_shadow_height >= 1)
 					{
-						short abs_t = abs(j + 1 + (top_shadow_height - 1));
+						short abs_t = (j + (top_shadow_height - 1));
 						short temp_index = abs_t > (max_height - 2) ?
 							(max_height - 2) : abs_t;
 						top_gr_maxY_value = all_gr_YValues[temp_index];
 					}
-
 					else top_gr_maxY_value = all_gr_YValues[j];
+
 					for (short k = 0; k < top_shadow_height; k++) top_shadow[k] = '|';
 				}
 				else {
 					top_gr_minY_value = all_gr_YValues[j + 1];
 					if (top_shadow_height >= 1)
 					{
-						short abs_t = abs(j + 1 + (top_shadow_height - 1));
+						short abs_t = (j + 1 + (top_shadow_height - 1));
 						short temp_index = abs_t > (max_height - 2) ?
 							(max_height - 2) : abs_t;
 						top_gr_maxY_value = all_gr_YValues[temp_index];
